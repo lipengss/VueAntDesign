@@ -21,5 +21,6 @@ import { useSettingStore } from '@/stores/setting';
 
 const { componentData } = storeToRefs(useComponentStore());
 const { sourceCode } = storeToRefs(useSettingStore());
+
 const { toggleCollapsed } = useSettingStore();
 </script>

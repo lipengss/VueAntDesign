@@ -1,9 +1,8 @@
 <template>
-	<a-layout-sider class="layout-sider" :collapsed="component" :collapsedWidth="48" :width="324">
+	<a-layout-sider class="layout-sider" :collapsed="!component" :collapsedWidth="48" :width="324" :style="{ backgroundColor: token.colorBgContainer }">
 		<div class="side">
 			<ul>
 				<li v-for="(val, key) in componentData" :key="key" :class="{ 'side-active': data.sideActive === key }" @click="handleSideClick(key)">
-					<!-- <component :is="val.icon" :com="val.icon" :key="val.icon" /> -->
 					<BarChartOutlined v-if="val.icon === 'BarChartOutlined'" />
 					<TableOutlined v-if="val.icon === 'TableOutlined'" />
 					<StarOutlined v-if="val.icon === 'StarOutlined'" />
@@ -13,7 +12,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="side-content" :class="{ collapsed: !component }">
+		<div class="side-content" :class="{ collapsed: component }">
 			<template v-if="curSide.clas === 'tab'">
 				<a-tabs v-model:activeKey="data.tabActive" :tabBarGutter="0" type="card" tabPosition="left" @change="handleTabChange">
 					<a-tab-pane v-for="(tab, index) in curSide.tabs" :key="tab.type" :tab="tab.title">
@@ -47,9 +46,11 @@ import { computed, reactive } from 'vue';
 import { componentData } from '@/custom-components/componentData';
 import componentItem from '@/views/editor/componentPanel/component-item.vue';
 import { BarChartOutlined, TableOutlined, StarOutlined, ApartmentOutlined, SecurityScanOutlined } from '@ant-design/icons-vue';
-
 import { storeToRefs } from 'pinia';
 import { useSettingStore } from '@/stores/setting';
+import { theme } from 'ant-design-vue';
+
+const { token } = theme.useToken();
 
 const { component } = storeToRefs(useSettingStore());
 const { toggleCollapsed } = useSettingStore();
@@ -91,7 +92,7 @@ const handleTabChange = (key: string) => {
 			display: flex;
 			flex-direction: column;
 			flex-shrink: 0;
-			background-color: #191c21;
+			// background-color: #191c21;
 			ul {
 				flex: 1;
 				li {
@@ -105,12 +106,12 @@ const handleTabChange = (key: string) => {
 					}
 				}
 				li:last-child {
-					border-top: 1px solid #303030;
+					// border-top: 1px solid #303030;
 				}
 				.side-active {
 					position: relative;
 					background-color: #14161a;
-					color: #2681ff;
+					color: #fff;
 					&::after {
 						content: '';
 						width: 3px;
@@ -118,7 +119,7 @@ const handleTabChange = (key: string) => {
 						position: absolute;
 						left: 0;
 						top: 0;
-						background-color: #2681ff;
+						background-color: v-bind('token.colorPrimaryActive');
 					}
 				}
 			}
@@ -150,7 +151,7 @@ const handleTabChange = (key: string) => {
 				}
 			}
 			.wrapper-component {
-				height: calc(100vh - 40px);
+				height: calc(100vh - 64px);
 				padding: 16px;
 				padding-bottom: 0;
 				overflow-y: scroll;

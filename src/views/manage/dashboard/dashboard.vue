@@ -3,7 +3,10 @@
 		<a-button type="primary" @click="onCreate">PC端创建</a-button>
 		<div class="slider">
 			<div class="lt">
-				全部应用<span class="count"> {{ cards.length }} </span>个
+				{{ currentGroup?.title }}
+				<span class="count">
+					（<strong> {{ currentGroup?.count }} </strong>）个
+				</span>
 			</div>
 			<div class="rt">
 				<a-input-search v-model:value="search" placeholder="搜索" style="width: 180px; margin-right: 10px" />
@@ -12,9 +15,9 @@
 				</a-select>
 			</div>
 		</div>
-		<a-list :grid="{ gutter: 16, column: 6 }" :data-source="cards">
+		<a-list :grid="{ gutter: 16, column: 6 }" :data-source="productList">
 			<template #renderItem="{ item }">
-				<a-list-item>
+				<a-list-item style="padding: 0">
 					<product :item="item" />
 				</a-list-item>
 			</template>
@@ -24,33 +27,18 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { theme } from 'ant-design-vue';
 import product from './product.vue';
+import { storeToRefs } from 'pinia';
+import { useProductStore } from '@/stores/product';
+const { token } = theme.useToken();
+
+const { productList, currentGroup } = storeToRefs(useProductStore());
+
 const search = ref('');
 const sort = ref(undefined);
 const { push } = useRouter();
-const cards = ref([
-	{
-		title: '大屏监测',
-		status: 'push',
-		product: 10056,
-		id: 1,
-		cover: new URL('@/assets/img_empty.png', import.meta.url).href,
-	},
-	{
-		title: '用电监测',
-		status: 'pending',
-		product: 10057,
-		id: 2,
-		cover: new URL('@/assets/img_empty.png', import.meta.url).href,
-	},
-	{
-		title: '安全监测',
-		status: 'push',
-		product: 10058,
-		id: 3,
-		cover: new URL('@/assets/img_empty.png', import.meta.url).href,
-	},
-]);
+
 function onCreate() {
 	push({
 		path: `/editor/11695`,
@@ -65,23 +53,23 @@ function onCreate() {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		border-bottom: 1px solid #434b55;
+		border-bottom: 1px solid v-bind('token.colorSplit');
 		margin-bottom: 16px;
 		padding: 10px 0;
 		.count {
-			color: #2681db;
+			color: v-bind('token.colorPrimary');
 		}
 		.lt {
 			padding-left: 10px;
 			position: relative;
+			display: flex;
+			align-items: center;
 			&::before {
 				content: '';
-				width: 2px;
-				height: 14px;
-				position: absolute;
-				left: 0;
-				top: 4px;
-				background-color: #2681db;
+				width: 3px;
+				height: 16px;
+				margin-right: 10px;
+				background-color: v-bind('token.colorPrimary');
 			}
 		}
 	}

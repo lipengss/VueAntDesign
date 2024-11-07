@@ -12,7 +12,7 @@
 				@mouseup="deselectCurComponent"
 			>
 				<scroll-wrapper />
-				<footer-tool-bar />
+				<!-- <footer-tool-bar /> -->
 			</a-layout-content>
 			<setting-panel />
 		</a-layout>
@@ -104,6 +104,7 @@ getData();
 	overflow: hidden;
 	background: url(../../assets/point_bg.png);
 	box-sizing: border-box;
+
 	.main {
 		flex: 1;
 		width: 100%;

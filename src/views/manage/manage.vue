@@ -1,6 +1,6 @@
 <template>
 	<a-layout class="manage">
-		<a-layout-header class="header">
+		<a-layout-header class="header" :style="{ backgroundColor: token.colorBgContainer, borderBottom: `1px solid ${token.colorBorderSecondary}` }">
 			<div class="logo">
 				<div class="text">PICOHOOD</div>
 			</div>
@@ -14,8 +14,8 @@
 			</a-menu>
 		</a-layout-header>
 		<a-layout class="main-content">
-			<a-layout-sider :width="240">
-				<component :is="current + 'Aside'" />
+			<a-layout-sider :width="240" :style="{ backgroundColor: token.colorBgContainer }">
+				<component :is="componentTmp[current]" />
 			</a-layout-sider>
 			<a-layout-content>
 				<router-view />
@@ -23,35 +23,29 @@
 		</a-layout>
 	</a-layout>
 </template>
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import assetsAside from './assets/aside.vue';
 import dashboardAside from './dashboard/aside.vue';
 import dataAside from './data/aside.vue';
+import { theme } from 'ant-design-vue';
+const { token } = theme.useToken();
 
-export default defineComponent({
-	components: {
-		assetsAside,
-		dashboardAside,
-		dataAside,
-	},
-	setup() {
-		const { push, currentRoute, options } = useRouter();
-		const manages = options.routes.filter((item) => item.name === 'manage')[0].children;
-		const current = ref([currentRoute.value.name]);
+const componentTmp: any = {
+	assets: assetsAside,
+	dashboard: dashboardAside,
+	data: dataAside,
+};
 
-		function onMenuSelect(current: any) {
-			current.value = [current.key];
-			push({ path: current.key });
-		}
-		return {
-			manages,
-			current,
-			onMenuSelect,
-		};
-	},
-});
+const { push, currentRoute, options } = useRouter();
+const manages = options.routes.filter((item) => item.name === 'manage')[0].children;
+const current = ref([currentRoute.value.name]);
+
+function onMenuSelect(current: any) {
+	current.value = [current.key];
+	push({ path: current.key });
+}
 </script>
 <style lang="less" scoped>
 .manage {
@@ -59,7 +53,6 @@ export default defineComponent({
 	display: flex;
 	flex-direction: column;
 	.header {
-		background-color: #141414;
 		padding: 0;
 		.logo {
 			width: 240px;
@@ -73,7 +66,6 @@ export default defineComponent({
 				width: 100%;
 				height: 24px;
 				line-height: 24px;
-				background: rgba(255, 255, 255, 0.3);
 			}
 		}
 		.ant-menu-horizontal {
@@ -82,7 +74,6 @@ export default defineComponent({
 	}
 	.main-content {
 		flex: 1;
-		background-color: #171b22;
 	}
 }
 </style>

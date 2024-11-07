@@ -23,7 +23,7 @@
 						<a-input ref="inputRef" v-model:value="item.title" size="small" @blur="onRenameChange(item.id)" @pressEnter="onRenameChange(item.id)" />
 					</template>
 					<template v-else>
-						<svg-icon name="edit" />
+						<a-button type="text" shape="circle" size="small" :icon="h(EditOutlined)" />
 						{{ item.title }}
 					</template>
 				</span>
@@ -35,56 +35,51 @@
 		</a-card-meta>
 	</a-card>
 </template>
-<script lang="ts">
+<script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { defineComponent, nextTick, ref } from 'vue';
-export default defineComponent({
-	props: {
-		item: {
-			type: Object,
-			default: () => {},
-		},
-	},
-	setup(props, context) {
-		const { push } = useRouter();
-		const isActive = ref(0);
-		const inputRef: any = ref(null);
-		const { product, id } = props.item;
-		const editor = () => {
-			push({
-				path: `/editor/${product}`,
-			});
-		};
-		const remove = () => {
-			context.emit('deletes', id);
-		};
-		function copy() {}
-		function onRename(id: number) {
-			isActive.value = id;
-			nextTick(() => {
-				inputRef.value.input.focus();
-			});
-		}
-		function onRenameChange(id: number) {
-			if (props.item.title === '') return;
-			isActive.value = 0;
-		}
-		return {
-			isActive,
-			editor,
-			remove,
-			copy,
-			onRename,
-			inputRef,
-			onRenameChange,
-		};
+import { h, nextTick, ref } from 'vue';
+import { theme } from 'ant-design-vue';
+import { EditOutlined } from '@ant-design/icons-vue';
+
+const { token } = theme.useToken();
+
+const props = defineProps({
+	item: {
+		type: Object,
+		default: () => {},
 	},
 });
+
+const emit = defineEmits(['deletes']);
+
+const { push } = useRouter();
+const isActive = ref(0);
+const inputRef: any = ref(null);
+const { product, id } = props.item;
+const editor = () => {
+	push({
+		path: `/editor/${product}`,
+	});
+};
+const remove = () => {
+	emit('deletes', id);
+};
+function copy() {}
+function onRename(id: number) {
+	isActive.value = id;
+	nextTick(() => {
+		inputRef.value.input.focus();
+	});
+}
+function onRenameChange(id: number) {
+	if (props.item.title === '') return;
+	isActive.value = 0;
+}
 </script>
 <style lang="less" scoped>
 .ant-card {
 	/deep/.ant-card-cover {
-		border-bottom: 1px solid #303030;
+		border-bottom: 1px solid v-bind('token.colorBorder');
 		position: relative;
 		.hover-active {
 			width: 100%;
@@ -97,7 +92,9 @@ export default defineComponent({
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
-			background-color: rgba(0, 0, 0, 0.8);
+			background-color: v-bind('token.colorBgMask');
+			border-top-left-radius: 8px;
+			border-top-right-radius: 8px;
 			.line {
 				padding: 6px 6px;
 			}

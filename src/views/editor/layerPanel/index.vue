@@ -1,5 +1,5 @@
 <template>
-	<a-layout-sider :collapsed="layer" :collapsedWidth="0" :width="200">
+	<a-layout-sider :collapsed="!layer" :collapsedWidth="0" :width="200">
 		<div class="block">
 			<div class="top-tools">
 				<span v-for="item in topTools" :key="item.value" :title="item.label" @click="handleTools(item.value)">
@@ -27,7 +27,6 @@
 	</a-layout-sider>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue';
 import draggable from 'vuedraggable';
 import { storeToRefs } from 'pinia';
 import { useSettingStore } from '@/stores/setting';

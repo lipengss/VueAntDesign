@@ -6,7 +6,6 @@ interface State {
 	curComponent: any;
 	isTarget: any[];
 	curComponentIndex: any;
-	canvasStyleData: any;
 }
 
 export const useComponentStore = defineStore('componentStore', {
@@ -18,12 +17,6 @@ export const useComponentStore = defineStore('componentStore', {
 		curComponent: null,
 		isTarget: [],
 		curComponentIndex: null,
-		canvasStyleData: {
-			width: 1920,
-			height: 1080,
-			scale: 1,
-			backgroundColor: '#0d2a42',
-		},
 	}),
 	actions: {
 		// 添加组件数据
@@ -40,10 +33,6 @@ export const useComponentStore = defineStore('componentStore', {
 		},
 		setTargets(arr: any) {
 			this.isTarget = arr;
-		},
-		// 页面设置
-		setCanvasStyleData(data: { key: string; value: string }): void {
-			this.canvasStyleData[data.key] = data.value;
 		},
 		// 设置当前选中的组件
 		setCurComponent(data: Component) {

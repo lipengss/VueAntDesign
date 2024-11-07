@@ -1,5 +1,5 @@
 <template>
-	<a-layout-sider :collapsed="setting" :collapsedWidth="0" :width="324">
+	<a-layout-sider :collapsed="!setting" :collapsedWidth="0" :width="324">
 		<a-tabs v-if="isTarget.length" v-model:activeKey="state.activeKey" size="small">
 			<template v-for="tab in state.tabs" :key="tab.component">
 				<template v-if="Object.keys(curComponent).length">
@@ -12,19 +12,19 @@
 		<div v-else class="page-set">
 			<div class="title">页面设置</div>
 			<div class="content my-scroll">
-				<a-row class="line" :gutter="[10, 10]">
-					<a-col :span="6" class="name">屏幕大小</a-col>
+				<a-row class="line" :gutter="[10, 10]" align="middle">
+					<a-col :span="6" class="name">画布大小</a-col>
 					<a-col :span="9">
-						<a-input-number v-model:value="canvasStyleData.width" size="small" />
+						<a-input-number :value="canvasOption.canvasWidth" size="small" @pressEnter="(e) => (canvasOption.canvasWidth = e.target.value)" />
 					</a-col>
 					<a-col :span="9">
-						<a-input-number v-model:value="canvasStyleData.height" size="small" />
+						<a-input-number :value="canvasOption.canvasHeight" size="small" @pressEnter="(e) => (canvasOption.canvasHeight = e.target.value)" />
 					</a-col>
 				</a-row>
-				<a-row class="line" :gutter="[10, 10]">
+				<a-row class="line" :gutter="[10, 10]" align="middle">
 					<a-col :span="6">背景颜色</a-col>
 					<a-col :span="18">
-						<popuColor v-model:color="canvasStyleData.backgroundColor" />
+						<popuColor v-model:color="canvasOption.backgroundColor" />
 					</a-col>
 				</a-row>
 			</div>
@@ -41,9 +41,11 @@ import popuColor from '@/components/popuColor/popuColor.vue';
 import { storeToRefs } from 'pinia';
 import { useSettingStore } from '@/stores/setting';
 import { useComponentStore } from '@/stores/component';
+import { useCanvasStore } from '@/stores/canvas';
 
 const { setting } = storeToRefs(useSettingStore());
-const { canvasStyleData, isTarget } = storeToRefs(useComponentStore());
+const { isTarget } = storeToRefs(useComponentStore());
+const { canvasOption } = storeToRefs(useCanvasStore());
 
 const state = reactive({
 	activeKey: 'bases',
@@ -60,6 +62,7 @@ const curComponent = computed(() => {
 	}
 	return {};
 });
+
 function isInclude(component: string) {
 	if (Object.prototype.hasOwnProperty.call(curComponent.value, component)) {
 		return true;

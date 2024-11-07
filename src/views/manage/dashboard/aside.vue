@@ -1,91 +1,90 @@
 <template>
-	<a-collapse :bordered="false" class="dashboard-aside">
-		<a-collapse-panel key="application" :showArrow="true">
-			<template #header>
-				<svg-icon name="application" />
-				应用列表
-			</template>
+	<a-collapse :bordered="false" class="dashboard-aside" ghost :activeKey="['application']">
+		<a-collapse-panel key="application" header="应用列表" :showArrow="true">
 			<ul class="list">
-				<template v-for="item in groupList" :key="item.id">
-					<li class="item" :class="{ active: active === item.id, enable: item.enable }" @click="active = item.id">
-						<div v-if="item.type === 'text'" class="text">
+				<template v-for="item in group.list" :key="item.id">
+					<li class="item" :class="{ active: group.activeId === item.id, enable: item.enable }" @click="group.activeId = item.id">
+						<template v-if="item.type === 'text'">
 							<span>{{ item.title }}</span>
 							<span v-if="item.enable" class="action">
-								<i @click="onEdit(item.id)">
-									<svg-icon name="edit" />
-								</i>
-								<i @click="onDelete(item.id)">
-									<svg-icon name="delete" />
-								</i>
+								<a-button type="text" shape="circle" size="small" :icon="h(EditOutlined)" @click="onEdit" />
+								<a-button type="text" shape="circle" size="small" :icon="h(DeleteOutlined)" @click="onDelete" />
 							</span>
 							<span class="count">{{ item.count }}</span>
-						</div>
-						<div v-else>
-							<a-input
-								ref="inputRef"
-								v-model:value="item.title"
-								placeholder="输入分类名称"
-								@blur="onInputChange(item.id)"
-								@pressEnter="onInputChange(item.id)"
-							/>
-						</div>
+						</template>
+						<a-input
+							v-else
+							ref="inputRef"
+							v-model:value="item.title"
+							placeholder="输入分类名称"
+							allowClear
+							@blur="onBlur"
+							@pressEnter="onPressEnter"
+						/>
 					</li>
 				</template>
 			</ul>
 			<template #extra>
-				<svg-icon name="add" @click="addClass" />
+				<PlusCircleOutlined @click="addClass" />
 			</template>
 		</a-collapse-panel>
-		<a-collapse-panel key="recycle" :show-arrow="false">
-			<template #header>
-				<svg-icon name="recycle" />
-				回收站
+		<a-collapse-panel key="recycle" header="回收站" :show-arrow="false">
+			<template #extra>
+				<DeleteOutlined />
 			</template>
 		</a-collapse-panel>
 	</a-collapse>
 </template>
 <script setup lang="ts">
-import { nextTick, reactive, ref, createVNode } from 'vue';
+import { nextTick, ref, createVNode, h } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useProductStore } from '@/stores/product';
 import { Modal } from 'ant-design-vue';
-import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
-const active = ref(1);
-const inputRef: any = ref(null);
-const groupList = reactive([
-	{ title: '全部应用', enable: false, type: 'text', id: 1, count: 3 },
-	{ title: '新建分类', enable: true, type: 'text', id: 2, count: 0 },
-	{ title: '未分组', enable: false, type: 'text', id: 3, count: 3 },
-]);
+import { ExclamationCircleOutlined, PlusCircleOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
+import { theme } from 'ant-design-vue';
+import { nanoid } from 'nanoid';
 
-function onInputChange(itemId: number) {
-	const { title, id }: any = current(itemId);
+const { token } = theme.useToken();
+const { group, allAppId, currentGroup } = storeToRefs(useProductStore());
+
+const inputRef: any = ref(null);
+
+function onBlur() {
+	const { title, id }: any = currentGroup.value;
 	if (title === '') {
-		groupList.splice(
-			groupList.findIndex((item) => item.id === id),
+		group.value.list.splice(
+			group.value.list.findIndex((item) => item.id === id),
 			1
 		);
+		group.value.activeId = allAppId.value;
 		return;
 	}
-	current(itemId).type = 'text';
+	currentGroup.value && (currentGroup.value.type = 'text');
+}
+function onPressEnter(e) {
+	console.log(e);
 }
 function addClass(event: any) {
 	event.stopPropagation();
-	if (groupList.some((item) => item.type === 'input')) return;
-	groupList.splice(groupList.length - 1, 0, {
+	if (group.value.list.some((item) => item.type === 'input')) return;
+	const id = nanoid();
+	group.value.list.splice(group.value.list.length - 1, 0, {
 		title: '',
 		enable: true,
 		type: 'input',
-		id: Date.now(),
+		id: id,
 		count: 0,
 	});
-	nextTick(() => inputRef.value.input.focus());
+	group.value.activeId = id;
+	nextTick(() => inputRef.value[0].input.focus());
 }
-function onEdit(id: number) {
-	if (groupList.some((item) => item.type === 'input')) return;
-	current(id).type = 'input';
-	nextTick(() => inputRef.value.input.focus());
+function onEdit() {
+	if (group.value.list.some((item) => item.type === 'input')) return;
+	currentGroup.value && (currentGroup.value.type = 'input');
+	nextTick(() => inputRef.value[0].input.focus());
 }
-function onDelete(id: number) {
-	const { title } = current(id);
+function onDelete() {
+	const { title } = currentGroup.value as { title: string };
 	Modal.confirm({
 		title: title,
 		icon: createVNode(ExclamationCircleOutlined),
@@ -95,48 +94,41 @@ function onDelete(id: number) {
 		cancelText: '取消',
 		okButtonProps: { type: 'primary' },
 		onOk() {
-			const index = groupList.findIndex((item) => item.id === id);
-			groupList.splice(index, 1);
+			const index = group.value.list.findIndex((item) => item.id === group.value.activeId);
+			group.value.list.splice(index, 1);
+			group.value.activeId = allAppId.value;
 		},
 		onCancel() {},
 	});
-}
-function current(id: number): any {
-	return groupList.find((item) => item.id === id);
 }
 </script>
 <style lang="less" scoped>
 .dashboard-aside {
 	text-align: left;
-	/deep/.ant-collapse-item {
-		.ant-collapse-header {
-			padding: 15px 12px 15px 40px !important;
-		}
-	}
-	/deep/.ant-collapse-content {
+
+	:deep .ant-collapse-content {
 		.ant-collapse-content-box {
 			padding: 0;
 		}
 	}
 	.list {
 		.item {
+			height: 40px;
 			text-align: left;
-			padding: 8px 10px 8px 16px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 8px 14px 8px 16px;
 			cursor: pointer;
 			&:hover:not(.active) {
-				background-color: rgba(255, 255, 255, 0.08);
+				// background-color: rgba(255, 255, 255, 0.08);
+				background-color: v-bind('token.colorPrimaryBg');
 				.action {
 					display: inline-block;
 				}
 			}
-			.text {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				i {
-					font-size: 12px;
-					padding: 4px;
-				}
+			.count {
+				padding-right: 6px;
 			}
 			.action {
 				display: none;
@@ -155,9 +147,13 @@ function current(id: number): any {
 			}
 		}
 		.active {
-			background-color: #177ddc;
+			background-color: v-bind('token.colorPrimaryActive');
+			color: #fff;
 			.action {
 				display: inline-block;
+				.ant-btn-text {
+					color: #fff;
+				}
 			}
 		}
 	}

@@ -22,3 +22,10 @@ interface Component {
 	component: any;
 	index: number;
 }
+
+interface AsideComponentTypeItem {
+	title: string;
+	icon: string;
+	clas: string;
+	components: AsideComponentItem[];
+}
