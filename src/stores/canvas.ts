@@ -48,22 +48,22 @@ export const useCanvasStore = defineStore('canvasStore', {
 		palette() {
 			const { theme } = storeToRefs(useThemeStore());
 			return theme.value.algorithm === 'dark'
- {
-				bgColor: 'transparent',
-				hoverBg: '#fff',
-				bb: '#fff',
-				hoverColor: '#000',
-				longfgColor: '#BABBBC', // ruler longer mark color
-				fontColor: '#DEDEDE', // ruler font color
-				shadowColor: '#525252', // ruler shadow color
-				lineColor: '#51d6a9',
-				borderColor: '#B5B5B5',
-		  }
-		: {
-				bgColor: 'transparent',
-				lineColor: '#51d6a9',
-				lineType: 'dashed',
-		  };
+				? {
+						bgColor: 'transparent',
+						hoverBg: '#fff',
+						bb: '#fff',
+						hoverColor: '#000',
+						longfgColor: '#BABBBC', // ruler longer mark color
+						fontColor: '#DEDEDE', // ruler font color
+						shadowColor: '#525252', // ruler shadow color
+						lineColor: '#51d6a9',
+						borderColor: '#B5B5B5',
+				  }
+				: {
+						bgColor: 'transparent',
+						lineColor: '#51d6a9',
+						lineType: 'dashed',
+				  };
 		},
 	},
 	actions: {},
