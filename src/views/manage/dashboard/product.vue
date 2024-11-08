@@ -78,7 +78,7 @@ function onRenameChange(id: number) {
 </script>
 <style lang="less" scoped>
 .ant-card {
-	/deep/.ant-card-cover {
+	:deep .ant-card-cover {
 		border-bottom: 1px solid v-bind('token.colorBorder');
 		position: relative;
 		.hover-active {
@@ -117,7 +117,7 @@ function onRenameChange(id: number) {
 			}
 		}
 	}
-	/deep/.ant-card-body {
+	:deep .ant-card-body {
 		padding: 16px 10px;
 		.ant-card-meta-title {
 			display: flex;

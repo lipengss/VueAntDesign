@@ -2,6 +2,8 @@ import { Components, bg } from './components';
 
 import { BarChartOutlined, TableOutlined, StarOutlined, ApartmentOutlined, SecurityScanOutlined } from '@ant-design/icons-vue';
 
+import { AsideComponentTypeItem } from '@/types/common';
+
 const opt = {
 	textColor: '#8adde1',
 	bgColor: '#2f3133',

@@ -1,17 +1,11 @@
 <template>
-	<a-layout-sider class="layout-sider" :collapsed="!component" :collapsedWidth="48" :width="324" :style="{ backgroundColor: token.colorBgContainer }">
-		<div class="side">
-			<ul>
-				<li v-for="(val, key) in componentData" :key="key" :class="{ 'side-active': data.sideActive === key }" @click="handleSideClick(key)">
-					<BarChartOutlined v-if="val.icon === 'BarChartOutlined'" />
-					<TableOutlined v-if="val.icon === 'TableOutlined'" />
-					<StarOutlined v-if="val.icon === 'StarOutlined'" />
-					<ApartmentOutlined v-if="val.icon === 'ApartmentOutlined'" />
-					<SecurityScanOutlined v-if="val.icon === 'SecurityScanOutlined'" />
-					<div class="title">{{ val.name }}</div>
-				</li>
-			</ul>
-		</div>
+	<a-layout-sider class="layout-sider" :collapsed="!component" :collapsedWidth="52" :width="324" :style="{ backgroundColor: token.colorBgContainer }">
+		<ul class="side">
+			<li v-for="(val, key) in componentData" :key="key" :class="{ 'side-active': data.sideActive === key }" @click="handleSideClick(key)">
+				<component :is="val.icon" />
+				<div class="title">{{ val.name }}</div>
+			</li>
+		</ul>
 		<div class="side-content" :class="{ collapsed: component }">
 			<template v-if="curSide.clas === 'tab'">
 				<a-tabs v-model:activeKey="data.tabActive" :tabBarGutter="0" type="card" tabPosition="left" @change="handleTabChange">
@@ -22,7 +16,7 @@
 									<component-item :component="component" :index="`${data.sideActive}_${index}_${idx}`" />
 								</template>
 							</div>
-							<a-empty v-else description="暂无组件" :image="simpleImage" />
+							<a-empty v-else description="暂无组件" :image="Empty.PRESENTED_IMAGE_SIMPLE" />
 						</div>
 					</a-tab-pane>
 				</a-tabs>
@@ -34,7 +28,7 @@
 							<component-item :component="component" :index="`${data.sideActive}_${index}`" />
 						</template>
 					</div>
-					<a-empty v-else description="暂无组件" :image="simpleImage" />
+					<a-empty v-else description="暂无组件" :image="Empty.PRESENTED_IMAGE_SIMPLE" />
 				</div>
 			</template>
 		</div>
@@ -45,7 +39,6 @@ import { Empty } from 'ant-design-vue';
 import { computed, reactive } from 'vue';
 import { componentData } from '@/custom-components/componentData';
 import componentItem from '@/views/editor/componentPanel/component-item.vue';
-import { BarChartOutlined, TableOutlined, StarOutlined, ApartmentOutlined, SecurityScanOutlined } from '@ant-design/icons-vue';
 import { storeToRefs } from 'pinia';
 import { useSettingStore } from '@/stores/setting';
 import { theme } from 'ant-design-vue';
@@ -53,9 +46,8 @@ import { theme } from 'ant-design-vue';
 const { token } = theme.useToken();
 
 const { component } = storeToRefs(useSettingStore());
-const { toggleCollapsed } = useSettingStore();
 
-const data = reactive({
+const data: SideData = reactive({
 	scroll: null,
 	sideActive: 'echarts',
 	tabActive: 'all',
@@ -65,16 +57,15 @@ const data = reactive({
 		{ title: '柱状', key: 'ss' },
 	],
 });
-const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
 const curSide = computed(() => componentData[data.sideActive] || {});
 
-const handleSideClick = (key: string) => {
+const handleSideClick = (key: SideComponentType) => {
 	data.sideActive = key;
-	component.value && toggleCollapsed('component');
 };
 const setComponent = () => {
 	const curSide = componentData[data.sideActive];
-	const comp = curSide.tabs.find((item: any) => item.type === data.tabActive);
+	const comp = curSide.tabs && curSide.tabs.find((item: any) => item.type === data.tabActive);
+	if (!comp) return;
 	comp.components = comp.type === 'all' ? curSide.components : curSide.components.filter((item: any) => item.type === data.tabActive);
 };
 setComponent();
@@ -86,41 +77,39 @@ const handleTabChange = (key: string) => {
 
 <style lang="less" scoped>
 .layout-sider {
-	/deep/.ant-layout-sider-children {
+	:deep .ant-layout-sider-children {
 		display: flex;
 		.side {
+			width: 52px;
 			display: flex;
 			flex-direction: column;
-			flex-shrink: 0;
-			// background-color: #191c21;
-			ul {
-				flex: 1;
-				li {
-					padding: 10px 12px;
-					cursor: pointer;
-					.title {
-						font-size: 12px;
-					}
-					.anticon {
-						font-size: 16px;
-					}
+			li {
+				padding: 10px 14px;
+				cursor: pointer;
+				.anticon {
+					font-size: 16px;
+					margin-bottom: 6px;
 				}
-				li:last-child {
-					// border-top: 1px solid #303030;
+				.title {
+					font-size: 12px;
 				}
-				.side-active {
-					position: relative;
-					background-color: #14161a;
-					color: #fff;
-					&::after {
-						content: '';
-						width: 3px;
-						height: 100%;
-						position: absolute;
-						left: 0;
-						top: 0;
-						background-color: v-bind('token.colorPrimaryActive');
-					}
+			}
+			li:last-child {
+				border-top: 1px solid v-bind('token.colorBorder');
+			}
+			.side-active {
+				width: 52px;
+				position: relative;
+				background-color: v-bind('token.colorPrimary');
+				color: #fff;
+				&::after {
+					content: '';
+					width: 3px;
+					height: 100%;
+					position: absolute;
+					left: 0;
+					top: 0;
+					background-color: v-bind('token.colorPrimaryActive');
 				}
 			}
 		}
@@ -128,34 +117,36 @@ const handleTabChange = (key: string) => {
 			opacity: 0;
 			flex: 1;
 			transition: all 0.2s;
-			.ant-tabs-vertical {
-				.ant-tabs-bar {
-					border-right: none;
-				}
-				.ant-tabs-tab {
-					border: none;
-				}
+			.ant-tabs-left {
 				.ant-tabs-nav-wrap {
-					background-color: #14161a;
+					background-color: v-bind('token.colorFillQuaternary');
 				}
 				.ant-tabs-tab {
-					background-color: #14161a;
+					border-radius: 0;
+					border-color: v-bind('token.colorBorder');
+					border: none;
+					background-color: transparent;
 				}
 				.ant-tabs-tab-active {
-					background-color: #0a0b0d;
+					border-right-color: v-bind('token.colorBgContainer');
+					background-color: v-bind('token.colorFillSecondary');
 				}
-				.ant-tabs-left-content {
-					padding-left: 0;
+				.ant-tabs-content-holder {
 					border-left: none;
-					background-color: #0a0b0d;
+					margin-left: 0;
+				}
+				.ant-tabs-content {
+					.ant-tabs-tabpane {
+						padding-left: 0;
+					}
 				}
 			}
 			.wrapper-component {
 				height: calc(100vh - 64px);
-				padding: 16px;
+				padding: 8px;
 				padding-bottom: 0;
 				overflow-y: scroll;
-				background-color: #0a0b0d;
+				background-color: v-bind('token.colorBgLayout');
 			}
 		}
 		.collapsed {

@@ -102,9 +102,7 @@ getData();
 .manage-layout {
 	height: 100vh;
 	overflow: hidden;
-	background: url(../../assets/point_bg.png);
 	box-sizing: border-box;
-
 	.main {
 		flex: 1;
 		width: 100%;

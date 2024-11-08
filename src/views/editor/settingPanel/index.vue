@@ -1,5 +1,5 @@
 <template>
-	<a-layout-sider :collapsed="!setting" :collapsedWidth="0" :width="324">
+	<a-layout-sider :collapsed="!setting" :collapsedWidth="0" :width="324" :style="{ backgroundColor: token.colorBgContainer }">
 		<a-tabs v-if="isTarget.length" v-model:activeKey="state.activeKey" size="small">
 			<template v-for="tab in state.tabs" :key="tab.component">
 				<template v-if="Object.keys(curComponent).length">
@@ -42,6 +42,9 @@ import { storeToRefs } from 'pinia';
 import { useSettingStore } from '@/stores/setting';
 import { useComponentStore } from '@/stores/component';
 import { useCanvasStore } from '@/stores/canvas';
+import { theme } from 'ant-design-vue';
+
+const { token } = theme.useToken();
 
 const { setting } = storeToRefs(useSettingStore());
 const { isTarget } = storeToRefs(useComponentStore());
@@ -73,10 +76,10 @@ function isInclude(component: string) {
 <style lang="less" scoped>
 @import './tabs/style.less';
 .ant-tabs {
-	/deep/.ant-tabs-nav .ant-tabs-tab {
+	:deep .ant-tabs-nav .ant-tabs-tab {
 		margin-right: 0;
 	}
-	/deep/.ant-tabs-bar {
+	:deep .ant-tabs-bar {
 		margin: 0 !important;
 	}
 }
@@ -84,7 +87,7 @@ function isInclude(component: string) {
 	.title {
 		height: 30px;
 		line-height: 30px;
-		background-color: #2e343c;
+		background-color: v-bind('token.colorFillSecondary');
 	}
 	.content {
 		height: calc(100vh - 70px);

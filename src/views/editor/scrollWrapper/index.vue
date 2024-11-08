@@ -28,7 +28,7 @@ import elementResizeDetectorMaker from 'element-resize-detector';
 const { canvasOption } = storeToRefs(useCanvasStore());
 
 const cpuPalette = computed<PaletteType>(() => {
-	return true
+	return false
 		? {
 				bgColor: 'transparent',
 				hoverBg: '#fff',
@@ -88,6 +88,7 @@ const handleMouseDown = (e: MouseEvent) => {
 <style lang="less" scoped>
 .wrapper {
 	flex: 1;
+	// background: url(@/assets/point_bg.png);
 	.bot-footer {
 		width: 100%;
 		height: 30px;
