@@ -1,8 +1,9 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { useThemeStore } from './theme';
-import { theme } from 'ant-design-vue';
+
 interface State {
 	canvasOption: any;
+	ruleOption: any;
 }
 
 export const useCanvasStore = defineStore('canvasStore', {
@@ -43,26 +44,26 @@ export const useCanvasStore = defineStore('canvasStore', {
 				v: [0, 500],
 			},
 		},
+		ruleOption: {
+			bgColor: 'transparent',
+			lineColor: '#51d6a9',
+			lineType: 'dashed',
+		},
 	}),
 	getters: {
-		palette() {
-			const { theme } = storeToRefs(useThemeStore());
-			return theme.value.algorithm === 'dark'
-				? {
-						bgColor: 'transparent',
+		palette(state) {
+			const { modeIcon } = storeToRefs(useThemeStore());
+			return modeIcon.value === 'dark'
+				? state.ruleOption
+				: {
 						hoverBg: '#fff',
 						bb: '#fff',
 						hoverColor: '#000',
 						longfgColor: '#BABBBC', // ruler longer mark color
 						fontColor: '#DEDEDE', // ruler font color
 						shadowColor: '#525252', // ruler shadow color
-						lineColor: '#51d6a9',
 						borderColor: '#B5B5B5',
-				  }
-				: {
-						bgColor: 'transparent',
-						lineColor: '#51d6a9',
-						lineType: 'dashed',
+						...state.ruleOption,
 				  };
 		},
 	},

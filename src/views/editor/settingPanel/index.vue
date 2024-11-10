@@ -22,9 +22,15 @@
 					</a-col>
 				</a-row>
 				<a-row class="line" :gutter="[10, 10]" align="middle">
-					<a-col :span="6">背景颜色</a-col>
+					<a-col :span="6">画布颜色</a-col>
 					<a-col :span="18">
 						<popuColor v-model:color="canvasOption.backgroundColor" />
+					</a-col>
+				</a-row>
+				<a-row class="line" :gutter="[10, 10]" align="middle">
+					<a-col :span="6">参考线色</a-col>
+					<a-col :span="18">
+						<popuColor v-model:color="ruleOption.lineColor" />
 					</a-col>
 				</a-row>
 			</div>
@@ -48,7 +54,7 @@ const { token } = theme.useToken();
 
 const { setting } = storeToRefs(useSettingStore());
 const { isTarget } = storeToRefs(useComponentStore());
-const { canvasOption } = storeToRefs(useCanvasStore());
+const { canvasOption, ruleOption } = storeToRefs(useCanvasStore());
 
 const state = reactive({
 	activeKey: 'bases',

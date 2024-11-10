@@ -1,6 +1,6 @@
 <template>
 	<div class="wrapper" :style="wrapperStyle">
-		<sketch-ruler v-model:scale="canvasOption.scale" v-bind="canvasOption" :palette="cpuPalette">
+		<sketch-ruler v-model:scale="canvasOption.scale" v-bind="canvasOption" :palette="palette">
 			<template #default>
 				<div data-type="page" :style="canvasStyle" @mousedown="handleMouseDown"></div>
 			</template>
@@ -25,27 +25,7 @@ import { storeToRefs } from 'pinia';
 import { useCanvasStore } from '@/stores/canvas';
 import elementResizeDetectorMaker from 'element-resize-detector';
 
-const { canvasOption } = storeToRefs(useCanvasStore());
-
-const cpuPalette = computed<PaletteType>(() => {
-	return false
-		? {
-				bgColor: 'transparent',
-				hoverBg: '#fff',
-				bb: '#fff',
-				hoverColor: '#000',
-				longfgColor: '#BABBBC', // ruler longer mark color
-				fontColor: '#DEDEDE', // ruler font color
-				shadowColor: '#525252', // ruler shadow color
-				lineColor: '#51d6a9',
-				borderColor: '#B5B5B5',
-		  }
-		: {
-				bgColor: 'transparent',
-				lineColor: '#51d6a9',
-				lineType: 'dashed',
-		  };
-});
+const { canvasOption, palette } = storeToRefs(useCanvasStore());
 
 const canvasStyle = computed(() => {
 	const { canvasWidth, canvasHeight, backgroundColor } = canvasOption.value;
@@ -98,10 +78,18 @@ const handleMouseDown = (e: MouseEvent) => {
 		justify-content: flex-end;
 		padding: 0 4px;
 		border-top: 1px solid #000;
-		background-color: #222528;
+		// background-color: #222528;
 		.mg-r {
 			margin-right: 10px;
 		}
 	}
+}
+.whitewrapper {
+	background-color: #fafafc;
+	background-image: linear-gradient(#fafafc 20px, transparent 0), linear-gradient(90deg, transparent 20px, #373739 0);
+}
+.balckwrapper {
+	background-color: #18181c;
+	background-image: linear-gradient(#18181c 20px, transparent 0), linear-gradient(90deg, transparent 20px, #86909c 0);
 }
 </style>
