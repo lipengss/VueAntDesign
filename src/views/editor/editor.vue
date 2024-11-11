@@ -4,15 +4,8 @@
 		<a-layout class="main">
 			<layer-panel />
 			<component-panel />
-			<a-layout-content
-				class="layout-content"
-				@drop="handleDrop"
-				@dragover="handleDragOver"
-				@mousedown="handleMouseDown"
-				@mouseup="deselectCurComponent"
-			>
+			<a-layout-content class="layout-content" @dragover="handleDragOver" @mousedown="handleMouseDown" @mouseup="deselectCurComponent">
 				<scroll-wrapper />
-				<!-- <footer-tool-bar /> -->
 			</a-layout-content>
 			<setting-panel />
 		</a-layout>
@@ -25,15 +18,12 @@ import { storeToRefs } from 'pinia';
 import { useComponentStore } from '@/stores/component';
 import { useRoute } from 'vue-router';
 import { notification } from 'ant-design-vue';
-import { uniqueId, cloneDeep } from 'lodash-es';
 import headerToolBar from './headerToolBar/index.vue';
 import layerPanel from './layerPanel/index.vue';
 import componentPanel from './componentPanel/index.vue';
 import settingPanel from './settingPanel/index.vue';
 import scrollWrapper from './scrollWrapper/index.vue';
 import sourceCode from './sourceCode/index.vue';
-import footerToolBar from '@/views/editor/footerToolBar/index.vue';
-import { componentData } from '@/custom-components/componentData';
 
 const { params } = useRoute();
 const spinning = ref(false);
@@ -42,19 +32,6 @@ const spinning = ref(false);
 const { canvasStyleData, isTarget } = storeToRefs(useComponentStore());
 const { addComponentData, setTargets, setCurComponent, clearComponent, setCanvasStyleData } = useComponentStore();
 
-// 释放组件
-function handleDrop(e: any) {
-	const transfer = e.dataTransfer;
-	const index = transfer.getData('index').split('_');
-	const downOffsetX = transfer.getData('downOffsetX');
-	const downOffsetY = transfer.getData('downOffsetY');
-	const curSide = componentData[index[0]];
-	const component = curSide.clas === 'tab' ? cloneDeep(curSide.tabs[index[1]].components[index[2]]) : cloneDeep(curSide.components[index[1]]);
-	component.id = uniqueId('component_');
-	console.log(`translate(${e.offsetX - downOffsetX}px, ${e.offsetY - downOffsetY}px)`);
-	component.bases.transform = `translate(${e.offsetX - downOffsetX}px, ${e.offsetY - downOffsetY}px)`;
-	addComponentData(component);
-}
 // // 组件在目标区域中移动时触发
 function handleDragOver(e: any) {
 	e.preventDefault();

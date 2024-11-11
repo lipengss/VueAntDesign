@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 
 interface State {
-	componentData: Component[];
+	componentData: ComponentItem[];
 	editMode: boolean;
 	curComponent: any;
 	isTarget: any[];
@@ -20,7 +20,7 @@ export const useComponentStore = defineStore('componentStore', {
 	}),
 	actions: {
 		// 添加组件数据
-		addComponentData(data: Component) {
+		addComponentData(data: { index?: number; component: ComponentItem }) {
 			if (data.index !== undefined) {
 				this.componentData.splice(data.index, 0, data.component);
 			} else {
@@ -35,7 +35,7 @@ export const useComponentStore = defineStore('componentStore', {
 			this.isTarget = arr;
 		},
 		// 设置当前选中的组件
-		setCurComponent(data: Component) {
+		setCurComponent(data: { index?: number; component: ComponentItem }) {
 			this.curComponent = data.component;
 			this.curComponentIndex = data.index;
 		},
@@ -51,7 +51,7 @@ export const useComponentStore = defineStore('componentStore', {
 		setComponentData(componentData = []) {
 			this.componentData = componentData;
 		},
-		addComponent(data: Component) {
+		addComponent(data: { index?: number; component: ComponentItem }) {
 			if (data.index !== undefined) {
 				this.componentData.splice(data.index, 0, data.component);
 			} else {

@@ -18,9 +18,16 @@ import 'vue3-colorpicker/style.css';
 // 全局样式
 import './style/index.less';
 
+// SvgIcon
 import 'virtual:svg-icons-register';
 import SvgIcon from './components/SvgIcon/index.vue';
 app.component('svg-icon', SvgIcon);
+
+// 全局组件
+import { registerGlobalComponents } from './custom-components/components';
+
+registerGlobalComponents(app);
+
 app.use(createPinia());
 app.use(router);
 app.use(antd);

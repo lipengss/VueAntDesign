@@ -1,5 +1,3 @@
-import { IconComponentProps } from '@ant-design/icons-vue/lib/components/Icon';
-
 interface ComponentStyle {
 	top: number;
 	left: number;
@@ -8,7 +6,7 @@ interface ComponentStyle {
 	rotate: number;
 }
 
-export interface BaseStyle {
+interface BaseStyle {
 	[key: string]: any;
 	width?: number | string;
 	height?: number | string;
@@ -22,7 +20,7 @@ export interface BaseStyle {
 
 interface Component {
 	component: any;
-	index: number;
+	index?: number;
 }
 
 type TabType = 'all' | 'bar' | 'strip' | 'line' | 'area' | 'pie' | 'point' | 'radar' | 'relation' | 'other';
@@ -39,10 +37,23 @@ interface ComponentTypeItem {
 	components: AsideComponentItem[];
 }
 
-export interface AsideComponentTypeItem {
+interface AsideComponentTypeItem {
+	[key: string]: ComponentTypeItem;
 	echarts: ComponentTypeItem;
 	info: ComponentTypeItem;
 	table: ComponentTypeItem;
 	control: ComponentTypeItem;
 	like: ComponentTypeItem;
+}
+
+interface ComponentItem {
+	title: string;
+	image: string;
+	type?: string;
+	component: string;
+	events?: any[];
+	bases: any;
+	id: string;
+	offsetX: number;
+	offsetY: number;
 }

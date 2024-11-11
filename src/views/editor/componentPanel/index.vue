@@ -1,7 +1,7 @@
 <template>
 	<a-layout-sider class="layout-sider" :collapsed="!component" :collapsedWidth="52" :width="324" :style="{ backgroundColor: token.colorBgContainer }">
 		<ul class="side">
-			<li v-for="(val, key) in componentData" :key="key" :class="{ 'side-active': data.sideActive === key }" @click="handleSideClick(key)">
+			<li v-for="(val, key) in allComponentData" :key="key" :class="{ 'side-active': data.sideActive === key }" @click="handleSideClick(key)">
 				<component :is="val.icon" />
 				<div class="title">{{ val.name }}</div>
 			</li>
@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { Empty } from 'ant-design-vue';
 import { computed, reactive } from 'vue';
-import { componentData } from '@/custom-components/componentData';
+import { allComponentData } from '@/custom-components/componentData';
 import componentItem from '@/views/editor/componentPanel/component-item.vue';
 import { storeToRefs } from 'pinia';
 import { useSettingStore } from '@/stores/setting';
@@ -48,22 +48,16 @@ const { token } = theme.useToken();
 const { component } = storeToRefs(useSettingStore());
 
 const data: SideData = reactive({
-	scroll: null,
 	sideActive: 'echarts',
 	tabActive: 'all',
-	componentData,
-	tabs: [
-		{ title: '全部', key: 'all' },
-		{ title: '柱状', key: 'ss' },
-	],
 });
-const curSide = computed(() => componentData[data.sideActive] || {});
+const curSide = computed(() => allComponentData[data.sideActive] || {});
 
 const handleSideClick = (key: SideComponentType) => {
 	data.sideActive = key;
 };
 const setComponent = () => {
-	const curSide = componentData[data.sideActive];
+	const curSide = allComponentData[data.sideActive];
 	const comp = curSide.tabs && curSide.tabs.find((item: any) => item.type === data.tabActive);
 	if (!comp) return;
 	comp.components = comp.type === 'all' ? curSide.components : curSide.components.filter((item: any) => item.type === data.tabActive);
@@ -84,6 +78,10 @@ const handleTabChange = (key: string) => {
 			display: flex;
 			flex-direction: column;
 			li {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
 				padding: 10px 14px;
 				cursor: pointer;
 				.anticon {
@@ -117,6 +115,7 @@ const handleTabChange = (key: string) => {
 			opacity: 0;
 			flex: 1;
 			transition: all 0.2s;
+			flex-shrink: 0;
 			.ant-tabs-left {
 				.ant-tabs-nav-wrap {
 					background-color: v-bind('token.colorFillQuaternary');

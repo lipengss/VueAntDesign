@@ -1,4 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia';
+import type { PaletteType } from 'vue3-sketch-ruler';
 import { useThemeStore } from './theme';
 
 interface State {
@@ -51,7 +52,7 @@ export const useCanvasStore = defineStore('canvasStore', {
 		},
 	}),
 	getters: {
-		palette(state) {
+		palette(state): PaletteType {
 			const { modeIcon } = storeToRefs(useThemeStore());
 			return modeIcon.value === 'dark'
 				? state.ruleOption
@@ -65,6 +66,21 @@ export const useCanvasStore = defineStore('canvasStore', {
 						borderColor: '#B5B5B5',
 						...state.ruleOption,
 				  };
+		},
+		canvasStyle(state) {
+			const { canvasWidth, canvasHeight, backgroundColor } = state.canvasOption;
+			return {
+				width: `${canvasWidth}px`,
+				height: `${canvasHeight}px`,
+				backgroundColor,
+			};
+		},
+		ruleWrapperStyle(state) {
+			const { width, height } = state.canvasOption;
+			return {
+				width: `${width}px`,
+				height: `${height}px`,
+			};
 		},
 	},
 	actions: {},

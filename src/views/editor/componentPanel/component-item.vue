@@ -7,12 +7,12 @@
 			:data-index="props.index"
 			@dragstart="handleDragStart"
 			:style="{
-				backgroundImage: props.component.image,
+				backgroundImage: `url(${props.component.image})`,
 				backgroundSize: 'auto 100%',
 				backgroundRepeat: 'no-repeat',
 				backgroundPosition: 'center',
 			}"
-		/>
+		></div>
 	</div>
 </template>
 <script setup lang="ts">
@@ -50,10 +50,13 @@ const handleDragStart = (e: any): void => {
 		line-height: 22px;
 		text-align: left;
 		padding: 0 6px;
+		letter-spacing: 1px;
 		background-color: v-bind('token.colorFillSecondary');
+		color: v-bind('token.colorTextLabel');
 	}
 	.component {
 		min-height: 80px;
+		background-image: v-bind(path);
 	}
 }
 </style>

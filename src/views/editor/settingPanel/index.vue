@@ -22,13 +22,13 @@
 					</a-col>
 				</a-row>
 				<a-row class="line" :gutter="[10, 10]" align="middle">
-					<a-col :span="6">画布颜色</a-col>
+					<a-col :span="6" class="name">画布颜色</a-col>
 					<a-col :span="18">
 						<popuColor v-model:color="canvasOption.backgroundColor" />
 					</a-col>
 				</a-row>
 				<a-row class="line" :gutter="[10, 10]" align="middle">
-					<a-col :span="6">参考线色</a-col>
+					<a-col :span="6" class="name">参考线色</a-col>
 					<a-col :span="18">
 						<popuColor v-model:color="ruleOption.lineColor" />
 					</a-col>
@@ -93,11 +93,15 @@ function isInclude(component: string) {
 	.title {
 		height: 30px;
 		line-height: 30px;
+		text-align: center;
 		background-color: v-bind('token.colorFillSecondary');
 	}
 	.content {
 		height: calc(100vh - 70px);
-		padding: 16px;
+		padding: 10px;
+		.name {
+			color: v-bind('token.colorTextLabel');
+		}
 	}
 }
 </style>

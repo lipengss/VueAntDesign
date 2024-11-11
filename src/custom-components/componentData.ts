@@ -2,8 +2,6 @@ import { Components, bg } from './components';
 
 import { BarChartOutlined, TableOutlined, StarOutlined, ApartmentOutlined, SecurityScanOutlined } from '@ant-design/icons-vue';
 
-import { AsideComponentTypeItem } from '@/types/common';
-
 const opt = {
 	textColor: '#8adde1',
 	bgColor: '#2f3133',
@@ -13,7 +11,7 @@ const opt = {
 };
 const components = new Components(opt);
 // 类型： chart
-export const componentData: AsideComponentTypeItem = {
+export const allComponentData: AsideComponentTypeItem = {
 	echarts: {
 		name: '图表',
 		icon: BarChartOutlined,

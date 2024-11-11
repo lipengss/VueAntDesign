@@ -1,10 +1,10 @@
+import { defineAsyncComponent } from 'vue';
 import { Chart } from './chart';
 import deepmerge from 'deepmerge';
 import { cloneDeep, merge } from 'lodash-es';
 
-export function bg(path: string): string {
-	const img = new URL(`@/assets/${path}`, import.meta.url).href;
-	return `url(${img})`;
+export function bg(_path: string): string {
+	return new URL(`../assets/${_path}`, import.meta.url).href;
 }
 
 interface Color {
@@ -28,7 +28,7 @@ export class Components extends Chart {
 			{
 				title: '基本饼状图',
 				type: 'pie',
-				component: 'v-chart',
+				component: 'v-pie',
 				image: bg('echarts/pie/pie1.png'),
 				dataSource: cloneDeep(this.dataSource),
 				bases: {
@@ -495,5 +495,18 @@ export class Components extends Chart {
 				},
 			},
 		];
+	}
+}
+
+export function registerGlobalComponents(app) {
+	// 使用 import.meta.glob 来批量导入组件
+	const components = import.meta.glob('./**/*.vue');
+	// 遍历所有组件，异步导入并全局注册
+	for (const [path, resolver] of Object.entries(components)) {
+		const componentName = path
+			.split('/')
+			.pop()
+			.replace(/\.\w+$/, ''); // 去掉文件扩展名，得到组件名称
+		app.component(componentName, defineAsyncComponent(resolver));
 	}
 }

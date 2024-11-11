@@ -1,5 +1,5 @@
 <template>
-	<div id="editor" class="editor" ref="editorRef">
+	<div data-type="page" class="editor" ref="editorRef" :style="canvasStyle" @mousedown="handleMouseDown">
 		<div
 			v-for="(item, index) in componentData"
 			:class="['shape']"
@@ -35,19 +35,25 @@
 	</div>
 </template>
 <script setup lang="ts">
-import Moveable from 'vue3-moveable';
 import { ref, onMounted } from 'vue';
+import Moveable from 'vue3-moveable';
 import { storeToRefs } from 'pinia';
 import { useComponentStore } from '@/stores/component';
+import { useCanvasStore } from '@/stores/canvas';
 
 const { componentData, curComponent, curComponentIndex, isTarget } = storeToRefs(useComponentStore());
 const { setCurComponent, setTargets } = useComponentStore();
+const { canvasStyle, canvasOption } = storeToRefs(useCanvasStore());
 
 const editorRef = ref(null);
 const elementGuidelines: any = ref([]);
 onMounted(() => {
 	initElementGuidelines();
 });
+
+const handleMouseDown = (e: MouseEvent) => {
+	console.log('handleMouseDown', e);
+};
 function initElementGuidelines() {
 	const arr: any = [];
 	const ids: any = componentData.value.map((item: any) => item.id);
@@ -57,10 +63,20 @@ function initElementGuidelines() {
 	elementGuidelines.value = arr;
 }
 // 鼠标摁下
-function handleMouseDownShape(e: any, component: any, index: number) {
+function handleMouseDownShape(e: any, component: ComponentItem, index: number) {
 	e.preventDefault();
 	e.stopPropagation();
 	initElementGuidelines();
+	console.log('component', component);
+	const {
+		offsetX,
+		offsetY,
+		bases: { width, height },
+	} = component;
+	canvasOption.value.shadow.x = offsetX;
+	canvasOption.value.shadow.y = offsetY;
+	canvasOption.value.shadow.width = width;
+	canvasOption.value.shadow.height = height;
 	setCurComponent({ component: component, index: index });
 	setTargets([`#${component.id}`]);
 }
@@ -98,7 +114,7 @@ const getComponentStyle = (style: any) => {
 };
 // 位置
 const getShapeStyle = (style: any): any => {
-	const result: BaseSty = {};
+	const result: BaseStyle = {};
 	const arr = ['width', 'height', 'transform', 'opacity'];
 	arr.forEach((attr) => {
 		if (attr !== 'transform') {

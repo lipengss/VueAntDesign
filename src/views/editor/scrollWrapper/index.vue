@@ -1,86 +1,102 @@
 <template>
-	<div class="wrapper" :style="wrapperStyle">
-		<sketch-ruler v-model:scale="canvasOption.scale" v-bind="canvasOption" :palette="palette">
+	<div class="wrapper" :style="ruleWrapperStyle">
+		<sketch-ruler ref="sketchruleRef" v-model:scale="canvasOption.scale" v-bind="canvasOption" :palette="palette">
 			<template #default>
-				<div data-type="page" :style="canvasStyle" @mousedown="handleMouseDown"></div>
+				<VCanvas @drop="handleDrop" />
 			</template>
-			<!-- <template #btn="{ reset, zoomIn, zoomOut }">
+			<template #btn="{ reset, zoomIn, zoomOut }">
 				<div class="bot-footer">
-					<button @click.stop="reset">还原</button>
-					<button @click.stop="zoomIn">放大</button>
-					<button @click.stop="zoomOut">缩小</button>
+					<a-button shape="circle" type="text" @click.stop="reset" title="复位画布">
+						<template #icon><ExpandOutlined /></template>
+					</a-button>
+					<a-button shape="circle" type="text" @click.stop="zoomIn" title="放大画布">
+						<template #icon><ZoomInOutlined style="font-size: 16px" /></template>
+					</a-button>
+					<a-slider style="width: 130px" :min="0.3" :max="3" :step="0.1" v-model:value="canvasOption.scale" @change="onChange" />
+					<a-button shape="circle" type="text" @click.stop="zoomOut" title="缩小画布">
+						<template #icon><ZoomOutOutlined style="font-size: 16px" /></template>
+					</a-button>
 				</div>
-			</template> -->
+			</template>
 		</sketch-ruler>
 	</div>
 </template>
 <script setup lang="ts">
-// import ruler from './ruler/index.vue';
-// import VCanvas from '../canvas/canvas.vue';
-import { computed, nextTick, onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import SketchRuler from 'vue3-sketch-ruler';
-import type { PaletteType } from 'vue3-sketch-ruler';
 import 'vue3-sketch-ruler/lib/style.css';
 import { storeToRefs } from 'pinia';
 import { useCanvasStore } from '@/stores/canvas';
+import { useComponentStore } from '@/stores/component';
+import { allComponentData } from '@/custom-components/componentData';
+import { ZoomInOutlined, ZoomOutOutlined, ExpandOutlined } from '@ant-design/icons-vue';
 import elementResizeDetectorMaker from 'element-resize-detector';
+import { cloneDeep } from 'lodash-es';
+import VCanvas from './canvas.vue';
+import { theme } from 'ant-design-vue';
+import { nanoid } from 'nanoid';
 
-const { canvasOption, palette } = storeToRefs(useCanvasStore());
+const { token } = theme.useToken();
 
-const canvasStyle = computed(() => {
-	const { canvasWidth, canvasHeight, backgroundColor } = canvasOption.value;
-	return {
-		width: `${canvasWidth}px`,
-		height: `${canvasHeight}px`,
-		backgroundColor,
-	};
-});
+const { addComponentData } = useComponentStore();
+const { canvasOption, palette, ruleWrapperStyle } = storeToRefs(useCanvasStore());
 
-const wrapperStyle = computed(() => {
-	const { width, height } = canvasOption.value;
-	return {
-		width: `${width}px`,
-		height: `${height}px`,
-	};
-});
+const sketchruleRef = ref();
 
-function initDomRect() {
-	nextTick(() => {
-		const { clientWidth, clientHeight }: any = document.querySelector('.layout-content');
-		canvasOption.value.width = clientWidth;
-		canvasOption.value.height = clientHeight;
-	});
+function onChange() {
+	if (sketchruleRef.value) {
+		const panzoomInstance = sketchruleRef.value.panzoomInstance;
+		panzoomInstance.zoom(canvasOption.value.scale);
+	}
+}
+
+// 释放组件
+function handleDrop(e: any) {
+	const transfer = e.dataTransfer;
+	const index = transfer.getData('index').split('_');
+	const downOffsetX = transfer.getData('downOffsetX');
+	const downOffsetY = transfer.getData('downOffsetY');
+	const curSide = allComponentData[index[0]];
+	const component =
+		curSide.clas === 'tab' && curSide.tabs ? cloneDeep(curSide.tabs[index[1]].components[index[2]]) : cloneDeep(curSide.components[index[1]]);
+	component.id = 'component_' + nanoid();
+	component.offsetX = downOffsetX;
+	component.offsetY = downOffsetY;
+	component.bases.transform = `translate(${e.offsetX - downOffsetX}px, ${e.offsetY - downOffsetY}px)`;
+	addComponentData({ component });
 }
 
 onMounted(() => {
-	initDomRect();
 	let erd = elementResizeDetectorMaker();
 	erd.listenTo(document.querySelector('.layout-content'), function (element: any) {
 		canvasOption.value.width = element.clientWidth;
 		canvasOption.value.height = element.clientHeight;
 	});
 });
-
-const handleMouseDown = (e: MouseEvent) => {
-	console.log('handleMouseDown', e);
-};
 </script>
 <style lang="less" scoped>
 .wrapper {
 	flex: 1;
-	// background: url(@/assets/point_bg.png);
 	.bot-footer {
 		width: 100%;
-		height: 30px;
+		height: 34px;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		z-index: 100;
+		border-top: 1px solid v-bind('token.colorBorder');
+		background-color: v-bind('token.colorBgBase');
 		flex-shrink: 0;
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
 		padding: 0 4px;
-		border-top: 1px solid #000;
-		// background-color: #222528;
 		.mg-r {
 			margin-right: 10px;
+		}
+		:deep .ant-btn:hover {
+			transform: scale(1.2);
+			background-color: transparent !important;
 		}
 	}
 }
