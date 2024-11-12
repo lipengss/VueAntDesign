@@ -49,7 +49,7 @@ function onMenuSelect(current: any) {
 </script>
 <style lang="less" scoped>
 .manage {
-	height: 100%;
+	height: 100vh;
 	display: flex;
 	flex-direction: column;
 	.header {

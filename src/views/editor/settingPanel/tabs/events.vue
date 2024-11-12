@@ -10,7 +10,7 @@
 					<a-radio-button value="pointer"><svg-icon name="pointer" /></a-radio-button>
 				</a-radio-group>
 				<a-select v-model:value="event.type">
-					<template v-for="event in events" :key="event.value">
+					<template v-for="event in state.events" :key="event.value">
 						<a-select-option :value="event.value">
 							<span><svg-icon :name="event.icon" style="margin-right: 10px" />{{ event.label }}</span>
 						</a-select-option>
@@ -49,50 +49,42 @@
 		<a-button size="small" block type="primary" @click="addEvents">添加事件</a-button>
 	</div>
 </template>
-<script lang="ts">
-import { useStore } from 'vuex';
-import { defineComponent, computed, reactive, toRefs } from 'vue';
-export default defineComponent({
-	setup() {
-		const { state } = useStore();
-		const eventObj = {
-			id: 0,
-			type: 'click',
-			action: {
-				type: undefined,
-				url: {
-					jump: '_blank',
-					address: 'https://www.baidu.com/',
-				},
-				toggleComp: {},
-			},
-		};
-		const data = reactive({
-			events: [
-				{ label: '单击', value: 'click', icon: 'click' },
-				{ label: '双击', value: 'dblclick', icon: 'dblclick' },
-				{ label: '长按', value: 'mouseup', icon: 'longPress' },
-				{ label: '右键', value: 'contextmenu', icon: 'contextmenu' },
-			],
-		});
-		const curComponent: any = computed(() => state.component.curComponent);
-		const addEvents = () => {
-			eventObj.id++;
-			curComponent.value.events.push(JSON.parse(JSON.stringify(eventObj)));
-		};
-		const deleteEvents = (id: number) => {
-			const events = curComponent.value.events;
-			const index = events.findIndex((item: any) => item.id === id);
-			events.splice(index, 1);
-		};
-		return {
-			addEvents,
-			deleteEvents,
-			curComponent,
-			...toRefs(data),
-		};
+<script setup lang="ts">
+import { reactive } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useComponentStore } from '@/stores/component';
+
+const { curComponent } = storeToRefs(useComponentStore());
+
+const eventObj = {
+	id: 0,
+	type: 'click',
+	action: {
+		type: undefined,
+		url: {
+			jump: '_blank',
+			address: 'https://www.baidu.com/',
+		},
+		toggleComp: {},
 	},
+};
+const state = reactive({
+	events: [
+		{ label: '单击', value: 'click', icon: 'click' },
+		{ label: '双击', value: 'dblclick', icon: 'dblclick' },
+		{ label: '长按', value: 'mouseup', icon: 'longPress' },
+		{ label: '右键', value: 'contextmenu', icon: 'contextmenu' },
+	],
 });
+const addEvents = () => {
+	eventObj.id++;
+	curComponent.value.events.push(JSON.parse(JSON.stringify(eventObj)));
+};
+const deleteEvents = (id: number) => {
+	const events = curComponent.value.events;
+	const index = events.findIndex((item: any) => item.id === id);
+	events.splice(index, 1);
+};
 </script>
 <style lang="less" scoped>
 @import './style.less';

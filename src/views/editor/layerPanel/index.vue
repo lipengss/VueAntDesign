@@ -1,29 +1,21 @@
 <template>
-	<a-layout-sider :collapsed="!layer" :collapsedWidth="0" :width="200">
-		<div class="block">
-			<div class="top-tools">
-				<span v-for="item in topTools" :key="item.value" :title="item.label" @click="handleTools(item.value)">
-					<svg-icon :name="item.value" />
-				</span>
-			</div>
-			<ul class="layer-list my-scroll">
-				<draggable v-model="componentData" item-key="id">
-					<template #item="{ element }">
-						<li class="item" :class="{ 'item-active': !!curComponent && element.id === curComponent.id }" @click="selectComponent(element)">
-							<div class="img-wrap">
-								<div class="img" :style="{ backgroundImage: element.image }" height="100%" />
-							</div>
-							<span>{{ element.title }}</span>
-						</li>
-					</template>
-				</draggable>
-			</ul>
-			<div class="bot-tools">
-				<span v-for="item in botTools" :key="item.value" :title="item.label" @click="handleTools(item.value)">
-					<svg-icon :name="item.value" />
-				</span>
-			</div>
-		</div>
+	<a-layout-sider :collapsed="!layer" :collapsedWidth="0" :width="200" :style="{ backgroundColor: token.colorBgLayout }">
+		<a-flex class="top-tools" justify="space-around" align="center">
+			<btn-icon v-for="item in topTools" :key="item.value" :svg-name="item.value" :title="item.label" @click="handleTools(item.value)" />
+		</a-flex>
+		<ul class="layer-list my-scroll">
+			<draggable v-model="componentData" item-key="id">
+				<template #item="{ element }">
+					<li class="item" :class="{ 'item-active': !!curComponent && element.id === curComponent.id }" @click="selectComponent(element)">
+						<div class="img-wrap" :style="{ backgroundImage: `url(${element.image})` }" />
+						<span>{{ element.title }}</span>
+					</li>
+				</template>
+			</draggable>
+		</ul>
+		<a-flex class="bot-tools" justify="space-around" align="center">
+			<btn-icon v-for="item in botTools" :key="item.value" :svg-name="item.value" :title="item.label" @click="handleTools(item.value)" />
+		</a-flex>
 	</a-layout-sider>
 </template>
 <script setup lang="ts">
@@ -31,6 +23,10 @@ import draggable from 'vuedraggable';
 import { storeToRefs } from 'pinia';
 import { useSettingStore } from '@/stores/setting';
 import { useComponentStore } from '@/stores/component';
+import BtnIcon from '@/components/BtnIcon/index.vue';
+import { theme } from 'ant-design-vue';
+
+const { token } = theme.useToken();
 
 const { layer } = storeToRefs(useSettingStore());
 const { componentData, curComponent } = storeToRefs(useComponentStore());
@@ -100,67 +96,44 @@ const handleTools = (pos: string) => {
 </script>
 <style lang="less" scoped>
 .ant-layout-sider {
-	.block {
-		width: 200px;
-	}
-	div[class*='tools'] {
-		height: 32px;
+	:deep .ant-layout-sider-children {
 		display: flex;
-		justify-content: center;
-		align-items: center;
-		span {
-			width: 20px;
-			height: 20px;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			margin: 0 9px;
-			border-radius: 1px;
-			transition: background 0.2s;
-			font-size: 14px;
-			color: #bcc9d4;
-			background-color: #282f3a;
-			opacity: 0.3;
-			cursor: pointer;
-			&:hover {
-				opacity: 0.5;
-				background-color: #3a4650;
-			}
-		}
+		flex-direction: column;
 	}
 	.top-tools {
-		border-bottom: 1px solid #282f3a;
+		padding: 6px;
+		border-bottom: 1px solid v-bind('token.colorBorder');
 	}
 	.bot-tools {
-		border-top: 1px solid #282f3a;
+		padding: 6px;
+		border-top: 1px solid v-bind('token.colorBorder');
 	}
 	.layer-list {
-		height: calc(100vh - 105px);
-		overflow-y: scroll;
+		flex: 1;
+		overflow-y: auto;
 		.item {
 			display: flex;
 			align-items: center;
-			padding: 8px 6px;
+			padding: 8px;
 			cursor: pointer;
+			border-bottom: 1px solid v-bind('token.colorBorder');
 			.img-wrap {
 				width: 53px;
-				height: 34px;
-				border: 1px solid #3a4659;
-				background-color: #17191c;
+				height: 38px;
+				background-color: v-bind('token.colorFillSecondary');
+				border-radius: 4px;
 				margin-right: 6px;
-				.img {
-					height: 100%;
-					background-size: 100% auto;
-					background-position: center;
-					background-repeat: no-repeat;
-				}
+				background-size: 100% auto;
+				background-position: center;
+				background-repeat: no-repeat;
 			}
 			&:hover:not(.item-active) {
-				background: rgba(143, 255, 255, 0.1);
+				background: v-bind('token.colorInfoBgHover');
 			}
 		}
 		.item-active {
-			background-color: #2681ff;
+			background-color: v-bind('token.colorInfoBg');
+			border-bottom: 1px solid v-bind('token.colorInfoBorder');
 		}
 	}
 }

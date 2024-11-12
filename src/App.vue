@@ -38,10 +38,6 @@ onMounted(() => {
 });
 </script>
 <style lang="less" scoped>
-:deep .ant-spin-nested-loading {
-	width: 100vw;
-	height: 100vh;
-}
 :deep .global-spin {
 	width: 100vw;
 	height: 100vh;

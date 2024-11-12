@@ -63,7 +63,7 @@ const setComponent = () => {
 	comp.components = comp.type === 'all' ? curSide.components : curSide.components.filter((item: any) => item.type === data.tabActive);
 };
 setComponent();
-const handleTabChange = (key: string) => {
+const handleTabChange = (key: TabType) => {
 	data.tabActive = key;
 	setComponent();
 };

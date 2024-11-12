@@ -27,10 +27,9 @@ import sourceCode from './sourceCode/index.vue';
 
 const { params } = useRoute();
 const spinning = ref(false);
-// const { state, commit } = useStore();
 
-const { canvasStyleData, isTarget } = storeToRefs(useComponentStore());
-const { addComponentData, setTargets, setCurComponent, clearComponent, setCanvasStyleData } = useComponentStore();
+const { isTarget } = storeToRefs(useComponentStore());
+const { addComponentData, setTargets, setCurComponent, clearComponent } = useComponentStore();
 
 // // 组件在目标区域中移动时触发
 function handleDragOver(e: any) {
@@ -64,11 +63,11 @@ function getData() {
 			data.components.forEach((component: any) => {
 				addComponentData(component);
 			});
-			for (const key in data.pageData) {
-				if (Object.prototype.hasOwnProperty.call(canvasStyleData.value, key)) {
-					setCanvasStyleData({ key: key, value: data.pageData[key] });
-				}
-			}
+			// for (const key in data.pageData) {
+			// 	if (Object.prototype.hasOwnProperty.call(canvasStyleData.value, key)) {
+			// 		setCanvasStyleData({ key: key, value: data.pageData[key] });
+			// 	}
+			// }
 		},
 		() => {}
 	);
@@ -80,6 +79,7 @@ getData();
 	height: 100vh;
 	overflow: hidden;
 	box-sizing: border-box;
+	user-select: none;
 	.main {
 		flex: 1;
 		width: 100%;

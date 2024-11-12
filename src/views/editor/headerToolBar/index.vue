@@ -27,13 +27,14 @@ import { createVNode } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useSettingStore } from '@/stores/setting';
 import { useComponentStore } from '@/stores/component';
+import { useCanvasStore } from '@/stores/canvas';
 import btnIcon from '@/components/BtnIcon/index.vue';
 import { theme } from 'ant-design-vue';
 const { token } = theme.useToken();
-
+const { canvasStyle } = storeToRefs(useCanvasStore());
 const { layer, component, setting, sourceCode } = storeToRefs(useSettingStore());
 const { toggleCollapsed } = useSettingStore();
-const { componentData, canvasStyleData } = storeToRefs(useComponentStore());
+const { componentData } = storeToRefs(useComponentStore());
 const { clearComponent } = useComponentStore();
 
 const { resolve } = useRouter();
@@ -59,7 +60,7 @@ function preview() {
 	const { href } = resolve({
 		path: '/preview',
 		// query: params
-		query: { data: JSON.stringify(componentData), pageData: JSON.stringify(canvasStyleData) },
+		query: { data: JSON.stringify(componentData), pageData: JSON.stringify(canvasStyle) },
 	});
 	window.open(href, '_blank');
 }

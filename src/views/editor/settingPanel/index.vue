@@ -1,12 +1,10 @@
 <template>
 	<a-layout-sider :collapsed="!setting" :collapsedWidth="0" :width="324" :style="{ backgroundColor: token.colorBgContainer }">
 		<a-tabs v-if="isTarget.length" v-model:activeKey="state.activeKey" size="small">
-			<template v-for="tab in state.tabs" :key="tab.component">
-				<template v-if="Object.keys(curComponent).length">
-					<a-tab-pane v-if="isInclude(tab.component)" :tab="tab.label" :key="tab.component">
-						<component :is="tab.component" :curComponent="curComponent" />
-					</a-tab-pane>
-				</template>
+			<template v-for="tab in state.tabs" :key="tab.property">
+				<a-tab-pane v-if="compInTabProp(tab.property)" :tab="tab.label" :key="tab.property">
+					<component :is="tab.component" />
+				</a-tab-pane>
 			</template>
 		</a-tabs>
 		<div v-else class="page-set">
@@ -38,11 +36,7 @@
 	</a-layout-sider>
 </template>
 <script setup lang="ts">
-import { computed, defineComponent, reactive, toRefs, watch } from 'vue';
-// import events from './tabs/events.vue';
-// import bases from './tabs/bases.vue';
-// import dataSource from './tabs/dataSource.vue';
-// import animation from './tabs/animation.vue';
+import { defineAsyncComponent, reactive } from 'vue';
 import popuColor from '@/components/popuColor/popuColor.vue';
 import { storeToRefs } from 'pinia';
 import { useSettingStore } from '@/stores/setting';
@@ -51,29 +45,24 @@ import { useCanvasStore } from '@/stores/canvas';
 import { theme } from 'ant-design-vue';
 
 const { token } = theme.useToken();
-
 const { setting } = storeToRefs(useSettingStore());
-const { isTarget } = storeToRefs(useComponentStore());
+const { isTarget, curComponent } = storeToRefs(useComponentStore());
 const { canvasOption, ruleOption } = storeToRefs(useCanvasStore());
 
 const state = reactive({
 	activeKey: 'bases',
 	tabs: [
-		{ label: '样式', component: 'bases' },
-		{ label: '事件', component: 'events' },
-		{ label: '数据', component: 'dataSource' },
-		{ label: '动画', component: 'animation' },
+		{ label: '样式', property: 'bases', component: defineAsyncComponent(() => import('./tabs/events.vue')) },
+		{ label: '事件', property: 'events', component: defineAsyncComponent(() => import('./tabs/bases.vue')) },
+		{ label: '数据', property: 'dataSource', component: defineAsyncComponent(() => import('./tabs/dataSource.vue')) },
+		{ label: '动画', property: 'animation', component: defineAsyncComponent(() => import('./tabs/animation.vue')) },
 	],
 });
-const curComponent = computed(() => {
-	if (isTarget.value.length && curComponent.value !== null) {
-		return curComponent.value;
-	}
-	return {};
-});
 
-function isInclude(component: string) {
-	if (Object.prototype.hasOwnProperty.call(curComponent.value, component)) {
+// 当前选中的组件是否有tab属性
+function compInTabProp(property: string) {
+	console.log('curComponent.value, property', curComponent.value, property);
+	if (curComponent.value && Object.prototype.hasOwnProperty.call(curComponent.value, property)) {
 		return true;
 	}
 	return false;

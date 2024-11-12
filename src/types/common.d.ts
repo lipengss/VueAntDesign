@@ -57,3 +57,14 @@ interface ComponentItem {
 	offsetX: number;
 	offsetY: number;
 }
+
+interface ColumnItem {
+	title: string;
+	dataIndex: string;
+	type: string;
+	id: number;
+	desc: string;
+	disDel: boolean;
+	fixed?: booleam;
+	placeholder?: string;
+}
