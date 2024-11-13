@@ -56,7 +56,6 @@ const handleDragStart = (e: any): void => {
 	}
 	.component {
 		min-height: 80px;
-		background-image: v-bind(path);
 	}
 }
 </style>

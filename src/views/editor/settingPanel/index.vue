@@ -1,9 +1,11 @@
 <template>
 	<a-layout-sider :collapsed="!setting" :collapsedWidth="0" :width="324" :style="{ backgroundColor: token.colorBgContainer }">
-		<a-tabs v-if="isTarget.length" v-model:activeKey="state.activeKey" size="small">
-			<template v-for="tab in state.tabs" :key="tab.property">
+		<a-tabs v-if="isTarget.length" v-model:activeKey="tabActive" size="small">
+			<template v-for="tab in tabs" :key="tab.property">
 				<a-tab-pane v-if="compInTabProp(tab.property)" :tab="tab.label" :key="tab.property">
-					<component :is="tab.component" />
+					<PerfectScrollbar class="tab-scroll">
+						<component :is="tab.component" />
+					</PerfectScrollbar>
 				</a-tab-pane>
 			</template>
 		</a-tabs>
@@ -36,7 +38,7 @@
 	</a-layout-sider>
 </template>
 <script setup lang="ts">
-import { defineAsyncComponent, reactive } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import popuColor from '@/components/popuColor/popuColor.vue';
 import { storeToRefs } from 'pinia';
 import { useSettingStore } from '@/stores/setting';
@@ -49,19 +51,16 @@ const { setting } = storeToRefs(useSettingStore());
 const { isTarget, curComponent } = storeToRefs(useComponentStore());
 const { canvasOption, ruleOption } = storeToRefs(useCanvasStore());
 
-const state = reactive({
-	activeKey: 'bases',
-	tabs: [
-		{ label: '样式', property: 'bases', component: defineAsyncComponent(() => import('./tabs/events.vue')) },
-		{ label: '事件', property: 'events', component: defineAsyncComponent(() => import('./tabs/bases.vue')) },
-		{ label: '数据', property: 'dataSource', component: defineAsyncComponent(() => import('./tabs/dataSource.vue')) },
-		{ label: '动画', property: 'animation', component: defineAsyncComponent(() => import('./tabs/animation.vue')) },
-	],
-});
+const tabActive = ref('bases');
+const tabs = [
+	{ label: '样式', property: 'bases', component: defineAsyncComponent(() => import('./tabs/bases.vue')) },
+	{ label: '事件', property: 'events', component: defineAsyncComponent(() => import('./tabs/events.vue')) },
+	{ label: '数据', property: 'dataSource', component: defineAsyncComponent(() => import('./tabs/dataSource.vue')) },
+	{ label: '动画', property: 'animation', component: defineAsyncComponent(() => import('./tabs/animation.vue')) },
+];
 
 // 当前选中的组件是否有tab属性
 function compInTabProp(property: string) {
-	console.log('curComponent.value, property', curComponent.value, property);
 	if (curComponent.value && Object.prototype.hasOwnProperty.call(curComponent.value, property)) {
 		return true;
 	}
@@ -69,13 +68,31 @@ function compInTabProp(property: string) {
 }
 </script>
 <style lang="less" scoped>
-@import './tabs/style.less';
-.ant-tabs {
-	:deep .ant-tabs-nav .ant-tabs-tab {
-		margin-right: 0;
+// global Style
+:deep .ant-row {
+	width: 100%;
+	margin-left: 0;
+	margin-right: 0;
+	margin-bottom: 10px;
+	font-size: 12px;
+	color: v-bind('token.colorTextLabel');
+	.ant-input-number {
+		width: 100%;
 	}
-	:deep .ant-tabs-bar {
-		margin: 0 !important;
+}
+// globa end
+
+:deep .ant-tabs {
+	.ant-tabs-nav {
+		margin-bottom: 0;
+	}
+	.ant-tabs-nav-wrap {
+		justify-content: center;
+	}
+	.tab-scroll {
+		height: calc(100vh - 98px);
+		padding: 8px 8px 20px 8px;
+		box-sizing: border-box;
 	}
 }
 .page-set {

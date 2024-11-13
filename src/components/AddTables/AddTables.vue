@@ -1,5 +1,5 @@
 <template>
-	<a-table :data-source="dataSource" row-key="id" :scroll="{ x: 293 }" tableLayout="fixed" :pagination="false" bordered size="small">
+	<a-table :data-source="dataSource" row-key="id" tableLayout="fixed" :pagination="false" bordered size="small">
 		<template v-for="item in columns" :key="item.dataIndex">
 			<a-table-column :title="item.title" width="70px" align="center" :fixed="item.fixed">
 				<template #default="{ record }">

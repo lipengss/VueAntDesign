@@ -60,7 +60,7 @@ function preview() {
 	const { href } = resolve({
 		path: '/preview',
 		// query: params
-		query: { data: JSON.stringify(componentData), pageData: JSON.stringify(canvasStyle) },
+		query: { componentData: JSON.stringify(componentData.value), canvasStyle: JSON.stringify(canvasStyle.value) },
 	});
 	window.open(href, '_blank');
 }

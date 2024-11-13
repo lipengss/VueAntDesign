@@ -12,28 +12,31 @@ import { ref, provide } from 'vue';
 
 use([CanvasRenderer, PieChart, TitleComponent, TooltipComponent, LegendComponent]);
 
-provide(THEME_KEY, 'dark');
+provide(THEME_KEY, 'light');
 
 const option = ref({
-	title: {
-		text: 'Traffic Sources',
-		left: 'center',
-	},
-	tooltip: {
-		trigger: 'item',
-		formatter: '{a} <br/>{b} : {c} ({d}%)',
-	},
-	legend: {
-		orient: 'vertical',
-		left: 'left',
-		data: ['Direct', 'Email', 'Ad Networks', 'Video Ads', 'Search Engines'],
-	},
+	// title: {
+	// 	text: 'Traffic Sources',
+	// 	left: 'center',
+	// },
+	// tooltip: {
+	// 	trigger: 'item',
+	// 	formatter: '{a} <br/>{b} : {c} ({d}%)',
+	// },
+	// legend: {
+	// 	orient: 'vertical',
+	// 	left: 'left',
+	// 	data: ['Direct', 'Email', 'Ad Networks', 'Video Ads', 'Search Engines'],
+	// },
 	series: [
 		{
 			name: 'Traffic Sources',
 			type: 'pie',
-			radius: '55%',
-			center: ['50%', '60%'],
+			radius: ['55%', '70%'],
+			center: ['50%', '50%'],
+			label: {
+				color: '#fff',
+			},
 			data: [
 				{ value: 335, name: 'Direct' },
 				{ value: 310, name: 'Email' },

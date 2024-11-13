@@ -38,8 +38,8 @@ const componentTmp: any = {
 	data: dataAside,
 };
 
-const { push, currentRoute, options } = useRouter();
-const manages = options.routes.filter((item) => item.name === 'manage')[0].children;
+const { push, currentRoute, getRoutes } = useRouter();
+const manages = getRoutes().filter((item) => item.name === 'manage')[0].children;
 const current = ref([currentRoute.value.name]);
 
 function onMenuSelect(current: any) {

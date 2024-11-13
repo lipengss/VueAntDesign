@@ -11,8 +11,9 @@
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
     "ant-design-vue": "^4.2.5",
-    "codemirror": "^5.65.18",
-    "codemirror-editor-vue3": "^2.8.0",
+    "autofit.js": "^3.2.1",
+    "codemirror": "^5.65.6",
+    "codemirror-editor-vue3": "^2.1.7",
     "dayjs": "^1.11.13",
     "deepmerge": "^4.3.1",
     "echarts": "^5.5.1",
@@ -32,13 +33,16 @@
     "vue-router": "^4.4.5",
     "vue3-colorpicker": "^2.3.0",
     "vue3-moveable": "^0.28.0",
+    "vue3-perfect-scrollbar": "^2.0.0",
     "vue3-sketch-ruler": "^2.2.6",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
+    "@types/codemirror": "^5.60.15",
     "@types/lodash-es": "^4.17.12",
     "@vitejs/plugin-vue": "^5.1.4",
     "less": "^4.2.0",
+    "sass-embedded": "^1.80.7",
     "typescript": "~5.6.2",
     "vite": "^5.4.10",
     "vue-tsc": "^2.1.8"

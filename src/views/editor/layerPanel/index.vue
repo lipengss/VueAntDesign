@@ -3,16 +3,16 @@
 		<a-flex class="top-tools" justify="space-around" align="center">
 			<btn-icon v-for="item in topTools" :key="item.value" :svg-name="item.value" :title="item.label" @click="handleTools(item.value)" />
 		</a-flex>
-		<ul class="layer-list my-scroll">
+		<PerfectScrollbar class="layer-list my-scroll">
 			<draggable v-model="componentData" item-key="id">
 				<template #item="{ element }">
-					<li class="item" :class="{ 'item-active': !!curComponent && element.id === curComponent.id }" @click="selectComponent(element)">
+					<div class="item" :class="{ 'item-active': !!curComponent && element.id === curComponent.id }" @click="selectComponent(element)">
 						<div class="img-wrap" :style="{ backgroundImage: `url(${element.image})` }" />
 						<span>{{ element.title }}</span>
-					</li>
+					</div>
 				</template>
 			</draggable>
-		</ul>
+		</PerfectScrollbar>
 		<a-flex class="bot-tools" justify="space-around" align="center">
 			<btn-icon v-for="item in botTools" :key="item.value" :svg-name="item.value" :title="item.label" @click="handleTools(item.value)" />
 		</a-flex>

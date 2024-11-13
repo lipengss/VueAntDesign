@@ -10,26 +10,26 @@
 			<template v-if="curSide.clas === 'tab'">
 				<a-tabs v-model:activeKey="data.tabActive" :tabBarGutter="0" type="card" tabPosition="left" @change="handleTabChange">
 					<a-tab-pane v-for="(tab, index) in curSide.tabs" :key="tab.type" :tab="tab.title">
-						<div class="wrapper-component my-scroll">
+						<PerfectScrollbar class="wrapper-component">
 							<div v-if="tab.components && tab.components.length">
 								<template v-for="(component, idx) in tab.components" :key="`${data.sideActive}_${index}_${idx}`">
 									<component-item :component="component" :index="`${data.sideActive}_${index}_${idx}`" />
 								</template>
 							</div>
 							<a-empty v-else description="暂无组件" :image="Empty.PRESENTED_IMAGE_SIMPLE" />
-						</div>
+						</PerfectScrollbar>
 					</a-tab-pane>
 				</a-tabs>
 			</template>
 			<template v-else>
-				<div class="wrapper-component my-scroll">
+				<PerfectScrollbar class="wrapper-component">
 					<div v-if="curSide.components && curSide.components.length">
 						<template v-for="(component, index) in curSide.components" :key="component">
 							<component-item :component="component" :index="`${data.sideActive}_${index}`" />
 						</template>
 					</div>
 					<a-empty v-else description="暂无组件" :image="Empty.PRESENTED_IMAGE_SIMPLE" />
-				</div>
+				</PerfectScrollbar>
 			</template>
 		</div>
 	</a-layout-sider>
@@ -116,6 +116,7 @@ const handleTabChange = (key: TabType) => {
 			flex: 1;
 			transition: all 0.2s;
 			flex-shrink: 0;
+			border-right: 1px solid v-bind('token.colorBorderSecondary');
 			.ant-tabs-left {
 				.ant-tabs-nav-wrap {
 					background-color: v-bind('token.colorFillQuaternary');

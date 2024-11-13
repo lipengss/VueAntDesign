@@ -299,7 +299,6 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-@import '../style.less';
 .margin {
 	display: flex;
 	align-items: center;

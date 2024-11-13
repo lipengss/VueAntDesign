@@ -48,82 +48,82 @@ export class Components extends Chart {
 					},
 				},
 			},
-			{
-				title: '基本环形图',
-				type: 'pie',
-				component: 'v-chart',
-				image: bg('echarts/pie/pie2.png'),
-				dataSource: cloneDeep(this.dataSource),
-				bases: {
-					width: 300,
-					height: 150,
-					rotate: 0,
-					opacity: 1,
-					chart: {
-						color: this.colorList,
-						backgroundColor: 'transparent',
-						legend: merge(cloneDeep(this.legend), { show: false }),
-						tooltip: cloneDeep(this.tooltip),
-						dataset: {
-							dimensions: ['product', 'count'],
-							source: this.mockData(['A', 'B'], ['product', 'count', 'score']),
-						},
-						series: [
-							merge(cloneDeep(this.series.pie), {
-								radius: ['60%', '75%'],
-								label: {
-									position: 'center',
-								},
-							}),
-							merge(cloneDeep(this.series.pie), {
-								radius: ['45%', '45%'],
-								label: {
-									show: false,
-								},
-								itemStyle: {
-									borderWidth: 1,
-									borderColor: '#333',
-								},
-							}),
-						],
-					},
-				},
-			},
-			{
-				title: '分割环形图',
-				type: 'pie',
-				component: 'v-chart',
-				image: bg('echarts/pie/pie5.png'),
-				dataSource: cloneDeep(this.dataSource),
-				bases: {
-					width: 300,
-					height: 150,
-					rotate: 0,
-					opacity: 1,
-					chart: {
-						color: this.colorList,
-						backgroundColor: 'transparent',
-						legend: merge(cloneDeep(this.legend), { show: false }),
-						tooltip: cloneDeep(this.tooltip),
-						dataset: {
-							dimensions: ['product', 'count'],
-							source: this.mockData(['A', 'B', 'C'], ['product', 'count', 'score']),
-						},
-						series: [
-							merge(cloneDeep(this.series.pie), {
-								itemStyle: {
-									borderWidth: 2,
-									borderColor: '#0d2a42',
-								},
-								radius: ['60%', '75%'],
-								label: {
-									position: 'outside',
-								},
-							}),
-						],
-					},
-				},
-			},
+			// {
+			// 	title: '基本环形图',
+			// 	type: 'pie',
+			// 	component: 'v-chart',
+			// 	image: bg('echarts/pie/pie2.png'),
+			// 	dataSource: cloneDeep(this.dataSource),
+			// 	bases: {
+			// 		width: 300,
+			// 		height: 150,
+			// 		rotate: 0,
+			// 		opacity: 1,
+			// 		chart: {
+			// 			color: this.colorList,
+			// 			backgroundColor: 'transparent',
+			// 			legend: merge(cloneDeep(this.legend), { show: false }),
+			// 			tooltip: cloneDeep(this.tooltip),
+			// 			dataset: {
+			// 				dimensions: ['product', 'count'],
+			// 				source: this.mockData(['A', 'B'], ['product', 'count', 'score']),
+			// 			},
+			// 			series: [
+			// 				merge(cloneDeep(this.series.pie), {
+			// 					radius: ['60%', '75%'],
+			// 					label: {
+			// 						position: 'center',
+			// 					},
+			// 				}),
+			// 				merge(cloneDeep(this.series.pie), {
+			// 					radius: ['45%', '45%'],
+			// 					label: {
+			// 						show: false,
+			// 					},
+			// 					itemStyle: {
+			// 						borderWidth: 1,
+			// 						borderColor: '#333',
+			// 					},
+			// 				}),
+			// 			],
+			// 		},
+			// 	},
+			// },
+			// {
+			// 	title: '分割环形图',
+			// 	type: 'pie',
+			// 	component: 'v-chart',
+			// 	image: bg('echarts/pie/pie5.png'),
+			// 	dataSource: cloneDeep(this.dataSource),
+			// 	bases: {
+			// 		width: 300,
+			// 		height: 150,
+			// 		rotate: 0,
+			// 		opacity: 1,
+			// 		chart: {
+			// 			color: this.colorList,
+			// 			backgroundColor: 'transparent',
+			// 			legend: merge(cloneDeep(this.legend), { show: false }),
+			// 			tooltip: cloneDeep(this.tooltip),
+			// 			dataset: {
+			// 				dimensions: ['product', 'count'],
+			// 				source: this.mockData(['A', 'B', 'C'], ['product', 'count', 'score']),
+			// 			},
+			// 			series: [
+			// 				merge(cloneDeep(this.series.pie), {
+			// 					itemStyle: {
+			// 						borderWidth: 2,
+			// 						borderColor: '#0d2a42',
+			// 					},
+			// 					radius: ['60%', '75%'],
+			// 					label: {
+			// 						position: 'outside',
+			// 					},
+			// 				}),
+			// 			],
+			// 		},
+			// 	},
+			// },
 		];
 	}
 	get bars() {

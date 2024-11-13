@@ -1,25 +1,35 @@
 <template>
-	<Codemirror ref="cmRefDom" v-model:value="textarea" :style="{ height: 'calc(100% - 60px)' }" :options="options" border> </Codemirror>
+	<Codemirror v-model:value="formatCode" :options="options" border> </Codemirror>
 </template>
 <script setup lang="ts">
-import { watch, ref } from 'vue';
-import 'codemirror/mode/javascript/javascript.js';
+import { withDefaults, defineProps, computed } from 'vue';
+import { EditorConfiguration } from 'codemirror';
 import Codemirror from 'codemirror-editor-vue3';
+// language
+import 'codemirror/mode/javascript/javascript.js';
+// 折叠
+import 'codemirror/addon/fold/foldgutter.css';
+import 'codemirror/addon/fold/foldcode';
+import 'codemirror/addon/fold/foldgutter';
+import 'codemirror/addon/fold/brace-fold';
+import 'codemirror/addon/fold/comment-fold';
 
-const props = defineProps({
-	dataValue: {
-		type: Object,
-		default: () => {},
-	},
-	height: {
-		type: String,
-		default: '300px',
-	},
-});
-let textarea: any = ref({});
+// 搜索
+import 'codemirror/addon/dialog/dialog.js';
+import 'codemirror/addon/dialog/dialog.css';
+import 'codemirror/addon/search/searchcursor.js';
+import 'codemirror/addon/search/search.js';
+
+interface Props {
+	code: any;
+}
+const props = withDefaults(defineProps<Props>(), {});
+
+const emits = defineEmits(['submit']);
+
 const options: EditorConfiguration = {
-	mode: 'javascript',
-	theme: 'default', // 主题
+	mode: 'text/javascript',
+	theme: 'zenburn', // 主题
 	lineNumbers: true, // 显示行号
 	smartIndent: true, // 智能缩进
 	indentUnit: 2, // 智能缩进单位为4个空格长度
@@ -29,37 +39,22 @@ const options: EditorConfiguration = {
 	gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'], // 启用行槽中的代码折叠
 	// styleActiveLine: true, // 显示选中行的样式
 };
-// const options = {
-// 	mode: { name: 'javascript', json: true },
-// 	tabSize: 2,
-// 	smartIndent: true,
-// 	lineNumbers: true,
-// 	matchBrackets: true,
-// 	autoRefresh: true,
-// 	readOnly: true,
-// 	value: [{ key: 'name' }],
-// 	lineWrapping: true,
-// 	scrollbarStyle: null,
-// 	theme: '3024-night',
-// 	extraKeys: { Ctrl: 'autocomplete' }, // 自定义快捷键
-// 	hintOptions: {
-// 		tables: {
-// 			// 自定义提示选项
-// 			users: ['name', 'score', 'birthDate'],
-// 			countries: ['name', 'population', 'size'],
-// 		},
-// 	},
-// };
 
-watch(
-	() => props.dataValue,
-	() => {
-		setDataValue();
-	},
-	{ deep: true, immediate: true }
-);
-function setDataValue() {
-	const jsonData = JSON.stringify(props.dataValue, null, 2);
-	textarea.value = jsonData;
-}
+const formatCode = computed(() => JSON.stringify(props.code, undefined, 4));
 </script>
+<style lang="scss" scoped>
+.content {
+	height: inherit;
+	.footer {
+		width: 100%;
+		height: 60px;
+		padding-left: 20px;
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+	}
+}
+</style>
