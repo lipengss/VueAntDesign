@@ -15,7 +15,7 @@
 					<popuColor v-model:color="bases.chart.backgroundColor" />
 				</a-col>
 			</template>
-			<a-col :span="6" class="name">图表位置</a-col>
+			<!-- <a-col :span="6" class="name">图表位置</a-col>
 			<a-col :span="18">
 				<a-flex gap="small">
 					<a-input-number v-model:value="bases.transformNum[0]" @change="translateX" />
@@ -31,7 +31,7 @@
 					<a-button class="icon-btn"><svg-icon name="horizontal" /></a-button>
 					<a-button class="icon-btn"><svg-icon name="vertical" /></a-button>
 				</a-flex>
-			</a-col>
+			</a-col> -->
 			<a-col :span="6" class="name">不透明度</a-col>
 			<a-col :span="18">
 				<a-flex gap="small">

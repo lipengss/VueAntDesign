@@ -26,6 +26,7 @@ interface State {
 		list: GroupItem[];
 	};
 	product: {
+		productId: string;
 		list: ProductItem[];
 	};
 }
@@ -43,25 +44,26 @@ export const useProductStore = defineStore('productStore', {
 			],
 		},
 		product: {
+			productId: '',
 			list: [
 				{
 					title: '大屏监测',
 					status: 'push',
-					product: nanoid(),
+					product: 'HPihuEKfBssq-4jGFz2MM',
 					id: allAppId,
 					cover: empty,
 				},
 				{
 					title: '用电监测',
 					status: 'pending',
-					product: nanoid(),
+					product: 'S5htdhYAxNmj8rJEFeDN3',
 					id: lineAppId,
 					cover: empty,
 				},
 				{
 					title: '安全监测',
 					status: 'push',
-					product: nanoid(),
+					product: '2gkgLi0VPXXj8v2Ejhw59',
 					id: lineAppId,
 					cover: empty,
 				},
@@ -80,6 +82,17 @@ export const useProductStore = defineStore('productStore', {
 			} else {
 				return state.product.list.filter((item) => item.id === state.group.activeId);
 			}
+		},
+		curProduct(state): ProductItem {
+			return (
+				state.product.list.find((item) => item.product === state.product.productId) || {
+					title: '空项目',
+					status: 'push',
+					product: nanoid(),
+					id: allAppId,
+					cover: empty,
+				}
+			);
 		},
 	},
 	actions: {},

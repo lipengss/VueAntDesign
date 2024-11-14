@@ -17,7 +17,7 @@
 				<axis :axis="chart.yAxis" dire="yAxis" />
 			</a-collapse-panel>
 			<a-collapse-panel key="tooltip" :disabled="!chart.tooltip.show">
-				<template #header> <a-switch size="small" v-model:checked="chart.tooltip.show" @change="switchChange('yAxis')" /> 提示框 </template>
+				<template #header> <a-switch size="small" v-model:checked="chart.tooltip.show" @change="switchChange('tooltip')" /> 提示框 </template>
 				<tooltip :tooltip="chart.tooltip" />
 			</a-collapse-panel>
 			<a-collapse-panel key="series" header="系列颜色">

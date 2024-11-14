@@ -8,9 +8,19 @@
 			<btnIcon title="清空画布" svg-name="clear" @on-cilck="clearCanvas" />
 		</a-space>
 		<div class="center">
-			<router-link class="back" to="/"><svg-icon name="manage" /></router-link>
+			<router-link class="back" to="/" title="返回主界面"><svg-icon name="manage" /></router-link>
 			<svg-icon name="line" />
-			项目名称
+			<a-input
+				v-if="isEditTitle"
+				ref="inputTitleRef"
+				showCount
+				:maxlength="10"
+				style="width: 180px"
+				:value="computedProductTitle"
+				@pressEnter="pressEnter"
+				@blur="isEditTitle = false"
+			/>
+			<span v-else title="双击编辑" @dblclick="dblclick">{{ curProduct.title }}</span>
 		</div>
 		<a-space class="right">
 			<btnIcon title="保存" svg-name="save" />
@@ -20,14 +30,15 @@
 	</a-layout-header>
 </template>
 <script setup lang="ts">
+import { createVNode, computed, ref, nextTick } from 'vue';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
-import { createVNode } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useSettingStore } from '@/stores/setting';
 import { useComponentStore } from '@/stores/component';
 import { useCanvasStore } from '@/stores/canvas';
+import { useProductStore } from '@/stores/product';
 import btnIcon from '@/components/BtnIcon/index.vue';
 import { theme } from 'ant-design-vue';
 const { token } = theme.useToken();
@@ -37,7 +48,32 @@ const { toggleCollapsed } = useSettingStore();
 const { componentData } = storeToRefs(useComponentStore());
 const { clearComponent } = useComponentStore();
 
+const { product, curProduct } = storeToRefs(useProductStore());
+
 const { resolve } = useRouter();
+
+const isEditTitle = ref(false);
+const inputTitleRef = ref();
+
+const computedProductTitle = computed({
+	get() {
+		return curProduct.value.title;
+	},
+	set(newValue) {
+		curProduct.value.title = newValue;
+	},
+});
+
+function pressEnter(e) {
+	curProduct.value.title = e.target.value;
+	isEditTitle.value = false;
+}
+function dblclick() {
+	isEditTitle.value = true;
+	nextTick(() => {
+		inputTitleRef.value.focus();
+	});
+}
 
 // 清空画布事件
 function clearCanvas() {

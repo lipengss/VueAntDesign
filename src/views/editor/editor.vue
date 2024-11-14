@@ -13,8 +13,9 @@
 	</a-layout>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useProductStore } from '@/stores/product';
 import { useComponentStore } from '@/stores/component';
 import { useRoute } from 'vue-router';
 import { notification } from 'ant-design-vue';
@@ -28,8 +29,11 @@ import sourceCode from './sourceCode/index.vue';
 const { params } = useRoute();
 const spinning = ref(false);
 
+const { product } = storeToRefs(useProductStore());
 const { isTarget } = storeToRefs(useComponentStore());
 const { addComponentData, setTargets, setCurComponent, clearComponent } = useComponentStore();
+
+const productId = computed(() => params.id);
 
 // // 组件在目标区域中移动时触发
 function handleDragOver(e: any) {
@@ -55,7 +59,7 @@ function deselectCurComponent(): void {
 function getData() {
 	clearComponent();
 	spinning.value = true;
-	fetch(`api/product/${params.id}`).then(
+	fetch(`api/product/${productId.value}`).then(
 		async (res) => {
 			spinning.value = false;
 			const { code, data, desc } = await res.json();
@@ -73,6 +77,14 @@ function getData() {
 	);
 }
 getData();
+
+watch(
+	() => productId.value,
+	(id) => {
+		if (id && typeof id === 'string') product.value.productId = id;
+	},
+	{ immediate: true }
+);
 </script>
 <style lang="less" scoped>
 .manage-layout {
