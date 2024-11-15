@@ -48,3 +48,12 @@ export const labelPositions = [
 	'insideTopRight',
 	'insideBottomRight',
 ];
+
+export const horizontalAlign = ['left', 'center', 'right'];
+export const verticalAlign = ['top', 'middle', 'bottom'];
+
+export function formatStrArr(arr: any) {
+	return arr.map((item: any) => {
+		return { label: item, value: item };
+	});
+}

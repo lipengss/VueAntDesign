@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import assetsAside from './assets/aside.vue';
+import assetsAside from './asset/aside.vue';
 import dashboardAside from './dashboard/aside.vue';
 import dataAside from './data/aside.vue';
 import { theme } from 'ant-design-vue';
@@ -52,6 +52,7 @@ function onMenuSelect(current: any) {
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
+	user-select: none;
 	.header {
 		padding: 0;
 		.logo {

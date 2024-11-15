@@ -15,5 +15,6 @@ const props = defineProps({
 <style lang="less" scoped>
 .title {
 	flex-shrink: 0;
+	min-width: 80px;
 }
 </style>

@@ -22,3 +22,37 @@ ol {
 .w100 {
 	width: 100%;
 }
+
+.flex-between {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+// 定义一个变量控制循环次数和每次增加的步长
+@max-steps: 10; // 生成10个不同的margin类
+@margin-step: 10px; // 每次增加的步长为10px
+
+// 使用递归函数实现循环
+.generate-margins(@i) when (@i > 0) {
+	.margin-@{i} {
+		margin: (@i * @margin-step);
+	}
+	.margin-left-@{i} {
+		margin-left: (@i * @margin-step);
+	}
+	.margin-right-@{i} {
+		margin-right: (@i * @margin-step);
+	}
+	.margin-top-@{i} {
+		margin-top: (@i * @margin-step);
+	}
+	.marigin-bottom-@{i} {
+		margin-bottom: (@i * @margin-step);
+	}
+	// 递归调用，生成下一个样式
+	.generate-margins(@i - 1);
+}
+
+// 开始生成，从@max-steps倒序生成
+.generate-margins(@max-steps);

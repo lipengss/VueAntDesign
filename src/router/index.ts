@@ -43,7 +43,7 @@ const routes: Array<RouteRecordRaw> = [
 							icon: 'assets',
 							title: '我的资产',
 						},
-						component: () => import('@/views/manage/assets/assets.vue'),
+						component: () => import('@/views/manage/asset/index.vue'),
 					},
 				],
 			},
