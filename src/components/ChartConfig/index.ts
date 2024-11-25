@@ -5,4 +5,10 @@ import Align from './Align.vue';
 // 百分比/绝对值组件
 import NumType from './NumType.vue';
 
-export { TextStyle, Align, NumType };
+import ArrayTable from './ArrayTable.vue';
+
+import LineStyle from './LineStyle.vue';
+
+import RespecSetNum from './RespecSetNum.vue';
+
+export { TextStyle, Align, NumType, ArrayTable, LineStyle, RespecSetNum };

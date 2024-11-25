@@ -3,7 +3,7 @@
 		<template #prefix>
 			<a-popover trigger="click" placement="leftTop">
 				<template #content>
-					<ColorPicker v-model:pureColor="color" format="hex8" isWidget />
+					<ColorPicker v-model:pureColor="color" format="hex8" isWidget @pureColorChange="pureColorChange" />
 				</template>
 				<div class="color-block">
 					<div class="block" :style="{ 'background-color': color }" />
@@ -11,38 +11,37 @@
 			</a-popover>
 		</template>
 		<template #suffix>
-			<a-button type="link" size="small" @click="copyText"><CopyOutlined /></a-button>
+			<a-button type="link" size="small" title="复制" @click="copyText"><CopyOutlined /></a-button>
 		</template>
 	</a-input>
 </template>
 <script setup lang="ts">
-import { ref, watch, defineProps, defineEmits } from 'vue';
+import { ref, defineProps, defineEmits } from 'vue';
 import { ColorInput } from 'tinycolor2';
 import useClipboard from 'vue-clipboard3';
 import { notification } from 'ant-design-vue';
 import { CopyOutlined } from '@ant-design/icons-vue';
 
+const { toClipboard } = useClipboard();
+
 const props = defineProps({
 	color: {
 		type: String,
-		default: '#000',
+		default: '',
 	},
 });
-const emit = defineEmits(['update:color']);
+const emit = defineEmits(['update:color', 'pureColorChange']);
 const color = ref<ColorInput>(props.color);
 
-watch(
-	() => color.value,
-	(color) => {
-		emit('update:color', color);
-	}
-);
+function pureColorChange(color: string) {
+	emit('pureColorChange', color);
+	emit('update:color', color);
+}
 
 const copyText = async () => {
 	try {
-		const { toClipboard } = useClipboard();
-		await toClipboard(color);
-		notification['success']({ message: '复制成功', duration: 1, description: color });
+		await toClipboard(color.value);
+		notification['success']({ message: '复制成功', duration: 1, description: color.value });
 	} catch (error: any) {
 		notification['error']({ message: '复制失败了', duration: 1, description: error });
 	}

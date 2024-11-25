@@ -63,7 +63,7 @@ const setComponent = () => {
 	comp.components = comp.type === 'all' ? curSide.components : curSide.components.filter((item: any) => item.type === data.tabActive);
 };
 setComponent();
-const handleTabChange = (key: TabType) => {
+const handleTabChange = (key: SeiresType) => {
 	data.tabActive = key;
 	setComponent();
 };
@@ -145,7 +145,6 @@ const handleTabChange = (key: TabType) => {
 				height: calc(100vh - 64px);
 				padding: 8px;
 				padding-bottom: 0;
-				overflow-y: scroll;
 				background-color: v-bind('token.colorBgLayout');
 			}
 		}

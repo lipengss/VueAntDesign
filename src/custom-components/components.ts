@@ -168,6 +168,45 @@ export class Components extends Chart {
 				},
 			},
 			{
+				title: '堆叠柱状图',
+				type: 'bar',
+				component: 'v-chart',
+				image: bg('echarts/bar/bar3.png'),
+				dataSource: cloneDeep(this.dataSource),
+				bases: {
+					width: 300,
+					height: 150,
+					rotate: 0,
+					opacity: 1,
+					chart: {
+						color: this.colorList,
+						backgroundColor: 'transparent',
+						grid: cloneDeep(this.grid),
+						legend: merge(cloneDeep(this.legend), { show: false }),
+						tooltip: cloneDeep(this.tooltip),
+						dataset: {
+							dimensions: ['product', 'count'],
+							source: this.mockData(['A', 'B', 'C', 'D', 'E'], ['product', 'count']),
+						},
+						xAxis: merge(cloneDeep(this.xAxis), {
+							axisLine: {
+								show: false,
+							},
+						}),
+						yAxis: merge(cloneDeep(this.yAxis), {
+							axisLine: {
+								show: false,
+							},
+							splitLine: {
+								show: true,
+							},
+							splitNumber: 4,
+						}),
+						series: [cloneDeep(this.series.bar)],
+					},
+				},
+			},
+			{
 				title: '多系列柱状图',
 				type: 'bar',
 				component: 'v-chart',

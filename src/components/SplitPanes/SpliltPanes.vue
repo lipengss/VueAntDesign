@@ -1,6 +1,6 @@
 <template>
 	<splitpanes class="default-theme" @resized="setSize">
-		<pane class="pane-left" :size="props.size" :min-size="14" :max-size="50">
+		<pane class="pane-left" :size="props.size" :min-size="14" :max-size="70">
 			<slot name="left" />
 		</pane>
 		<pane class="pane-right" :size="100 - props.size">

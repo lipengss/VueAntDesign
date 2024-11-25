@@ -1,17 +1,17 @@
 <template>
 	<a-space>
-		<div style="min-width: 60px">{{ title }}</div>
+		<div v-if="title" style="min-width: 60px">{{ title }}</div>
 		<a-radio-group v-model:value="numType" button-style="solid" size="small" @change="radioChange">
 			<a-radio-button value="abs">绝对值</a-radio-button>
 			<a-radio-button value="per">百分比</a-radio-button>
 		</a-radio-group>
 		<a-slider :value="formatValue" :min="0" :max="100" :step="1" @change="onChange" style="width: 140px" />
-		<a-input-number :value="formatValue" :min="1" :max="100" size="small" @change="onChange" style="width: 80px" />
+		<a-input-number :value="formatValue" :min="0" :max="100" size="small" @change="onChange" style="width: 80px" />
 		{{ numType === 'abs' ? '' : '%' }}
 	</a-space>
 </template>
 <script lang="ts" setup>
-import { ref, defineProps, computed, defineEmits, watchEffect } from 'vue';
+import { ref, defineProps, defineEmits, watchEffect } from 'vue';
 
 const props = defineProps({
 	title: {
@@ -19,7 +19,7 @@ const props = defineProps({
 		default: '',
 	},
 	value: {
-		typeof: String,
+		typeof: String || Number,
 		default: '50',
 	},
 });
@@ -31,11 +31,14 @@ const numType = ref<string>('per');
 const formatValue = ref();
 
 watchEffect(() => {
+	if (typeof props.value === 'number') numType.value = 'abs';
 	formatValue.value = parseInt(props.value);
 });
+
 function onChange(val) {
 	emit('update:value', numType.value === 'abs' ? val : `${val}%`);
 }
+
 function radioChange() {
 	if (numType.value === 'abs') {
 		emit('update:value', parseInt(props.value));

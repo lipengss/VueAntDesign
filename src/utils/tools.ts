@@ -14,3 +14,14 @@ export function formatStyle(style: BaseStyle, filter: Array<string>) {
 	});
 	return result;
 }
+
+export function isObject(obj: any) {
+	return Object.prototype.toString.call(obj) === '[object Object]';
+}
+export function hasOwn(obj: any, key: string) {
+	return Object.prototype.hasOwnProperty.call(obj, key);
+}
+
+export function collapsible(show: boolean) {
+	return show ? 'header' : 'disabled';
+}

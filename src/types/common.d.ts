@@ -23,7 +23,7 @@ interface Component {
 	index?: number;
 }
 
-type TabType = 'all' | 'bar' | 'strip' | 'line' | 'area' | 'pie' | 'point' | 'radar' | 'relation' | 'other';
+type SeiresType = 'all' | 'bar' | 'strip' | 'line' | 'area' | 'pie' | 'point' | 'radar' | 'relation' | 'other';
 
 interface ComponentTypeItem {
 	name: string;
@@ -31,7 +31,7 @@ interface ComponentTypeItem {
 	clas: 'tab' | 'component';
 	tabs?: {
 		title: string;
-		type: TabType;
+		type: SeiresType;
 		components: any[];
 	}[];
 	components: AsideComponentItem[];

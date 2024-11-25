@@ -23,12 +23,18 @@ export const dataSource = [
 export const weights = [
 	{ label: '默认', value: 400 },
 	{ label: '粗体', value: 700 },
-	{ label: '更粗', value: 900 },
 ];
 
 export const chartsType = [
 	{ label: '柱状图', value: 'bar' },
 	{ label: '折线图', value: 'line' },
+];
+
+export const AxisType = [
+	{ label: '数值轴', value: 'value' },
+	{ label: '类目轴', value: 'category' },
+	{ label: '时间轴', value: 'time' },
+	{ label: '对数轴', value: 'log' },
 ];
 
 export const pieLabelPositions = ['outside', 'inside', 'center'];
@@ -51,6 +57,8 @@ export const labelPositions = [
 
 export const horizontalAlign = ['left', 'center', 'right'];
 export const verticalAlign = ['top', 'middle', 'bottom'];
+
+export const axisSymbol = ['circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none'];
 
 export function formatStrArr(arr: any) {
 	return arr.map((item: any) => {

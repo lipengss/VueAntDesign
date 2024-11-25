@@ -3,7 +3,7 @@
 		<a-flex class="top-tools" justify="space-around" align="center">
 			<btn-icon v-for="item in topTools" :key="item.value" :svg-name="item.value" :title="item.label" @click="handleTools(item.value)" />
 		</a-flex>
-		<PerfectScrollbar class="layer-list my-scroll">
+		<PerfectScrollbar class="layer-list">
 			<draggable v-model="componentData" item-key="id">
 				<template #item="{ element }">
 					<div class="item" :class="{ 'item-active': !!curComponent && element.id === curComponent.id }" @click="selectComponent(element)">
