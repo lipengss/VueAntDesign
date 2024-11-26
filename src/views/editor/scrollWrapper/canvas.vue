@@ -1,14 +1,14 @@
 <template>
 	<div data-type="page" class="editor" ref="editorRef" :style="canvasStyle" @mousedown="handleMouseDown">
 		<div
-			v-for="(item, index) in componentData"
+			v-for="item in componentData"
 			:class="['shape']"
 			:id="item.id"
 			:key="item.id"
-			@mousedown="handleMouseDownShape($event, item, index)"
-			:style="getShapeStyle(item.bases)"
+			@mousedown="handleMouseDownShape($event, item)"
+			:style="getShapeStyle(item.boxStyle)"
 		>
-			<component :is="item.component" :element="item" :style="getComponentStyle(item.bases)" />
+			<component :is="item.component" :option="item.chartOption" :style="getComponentStyle(item.boxStyle)" />
 		</div>
 		<Moveable
 			className="moveable"
@@ -30,7 +30,7 @@
 			@drag="onDrag"
 			@resize="onResize"
 			@rotate="onRotate"
-			@mousedown="handleMouseDownShape($event, curComponent, curComponentIndex)"
+			@mousedown="handleMouseDownShape($event, curComponent)"
 		/>
 	</div>
 </template>
@@ -41,7 +41,7 @@ import { storeToRefs } from 'pinia';
 import { useComponentStore } from '@/stores/component';
 import { useCanvasStore } from '@/stores/canvas';
 
-const { componentData, curComponent, curComponentIndex, isTarget } = storeToRefs(useComponentStore());
+const { componentData, curComponent, isTarget } = storeToRefs(useComponentStore());
 const { setCurComponent, setTargets } = useComponentStore();
 const { canvasStyle, canvasOption } = storeToRefs(useCanvasStore());
 
@@ -57,49 +57,48 @@ const handleMouseDown = (e: MouseEvent) => {
 function initElementGuidelines() {
 	const arr: any = [];
 	const ids: any = componentData.value.map((item: any) => item.id);
-	ids.forEach((item: string) => {
-		arr.push(document.querySelector(`#${item}`));
+	ids.forEach((id: string) => {
+		arr.push(document.querySelector(`#${id}`));
 	});
 	elementGuidelines.value = arr;
 }
 // 鼠标摁下
-function handleMouseDownShape(e: any, component: ComponentItem, index: number) {
+function handleMouseDownShape(e: any, component: ComponentItem) {
 	e.preventDefault();
 	e.stopPropagation();
 	initElementGuidelines();
-	console.log('component', component);
 	const {
 		offsetX,
 		offsetY,
-		bases: { width, height },
+		boxStyle: { width, height },
 	} = component;
 	canvasOption.value.shadow.x = offsetX;
 	canvasOption.value.shadow.y = offsetY;
 	canvasOption.value.shadow.width = width;
 	canvasOption.value.shadow.height = height;
-	setCurComponent({ component: component, index: index });
+	setCurComponent(component);
 	setTargets([`#${component.id}`]);
 }
 // 移动
 function onDrag(e: any) {
 	const currentNode: any = document.querySelector(`${isTarget.value}`);
 	currentNode.style.transform = e.transform;
-	curComponent.value.bases.transform = e.transform;
-	curComponent.value.bases.transformNum = e.translate;
+	curComponent.value.boxStyle.transform = e.transform;
+	curComponent.value.boxStyle.transformNum = e.translate;
 }
 // 旋转
 function onRotate({ drag }: any) {
-	curComponent.value.bases.transform = `${drag.transform}`;
-	curComponent.value.bases.transformNum = drag.translate;
+	curComponent.value.boxStyle.transform = `${drag.transform}`;
+	curComponent.value.boxStyle.transformNum = drag.translate;
 }
 // 重置大小
 function onResize(e: any) {
 	e.target.style.width = e.width + 'px';
 	e.target.style.height = e.height + 'px';
 	e.target.style.transform = e.drag.transform;
-	curComponent.value.bases.width = e.width;
-	curComponent.value.bases.height = e.height;
-	curComponent.value.bases.transform = e.drag.transform;
+	curComponent.value.boxStyle.width = e.width;
+	curComponent.value.boxStyle.height = e.height;
+	curComponent.value.boxStyle.transform = e.drag.transform;
 }
 // 组件样式
 const getComponentStyle = (style: any) => {

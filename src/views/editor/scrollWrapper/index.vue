@@ -53,16 +53,21 @@ function onChange() {
 // 释放组件
 function handleDrop(e: any) {
 	const transfer = e.dataTransfer;
-	const index = transfer.getData('index').split('_');
+	const id = transfer.getData('id');
+	const sideKey = transfer.getData('sideKey');
 	const downOffsetX = transfer.getData('downOffsetX');
 	const downOffsetY = transfer.getData('downOffsetY');
-	const curSide = allComponentData[index[0]];
-	const component =
-		curSide.clas === 'tab' && curSide.tabs ? cloneDeep(curSide.tabs[index[1]].components[index[2]]) : cloneDeep(curSide.components[index[1]]);
-	component.id = 'component_' + nanoid();
+	const curSide = allComponentData[sideKey];
+	let component = null;
+	if (sideKey === 'echarts') {
+		component = cloneDeep(curSide.tabs && curSide.tabs[0].components.find((n) => n.id === id));
+	} else {
+		component = curSide.components && curSide.components.find((n) => n.id === id);
+	}
 	component.offsetX = downOffsetX;
 	component.offsetY = downOffsetY;
-	component.bases.transform = `translate(${e.offsetX - downOffsetX}px, ${e.offsetY - downOffsetY}px)`;
+	component.id = `component_${nanoid()}`;
+	component.boxStyle.transform = `translate(${e.offsetX - downOffsetX}px, ${e.offsetY - downOffsetY}px)`;
 	addComponentData({ component });
 }
 

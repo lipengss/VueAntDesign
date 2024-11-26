@@ -5,7 +5,6 @@ interface State {
 	editMode: boolean;
 	curComponent: any;
 	isTarget: any[];
-	curComponentIndex: any;
 }
 
 export const useComponentStore = defineStore('componentStore', {
@@ -16,7 +15,6 @@ export const useComponentStore = defineStore('componentStore', {
 		// 如果没点中组件，并且在画布空白处弹起鼠标，则取消当前组件的选中状态
 		curComponent: null,
 		isTarget: [],
-		curComponentIndex: null,
 	}),
 	actions: {
 		// 添加组件数据
@@ -35,18 +33,17 @@ export const useComponentStore = defineStore('componentStore', {
 			this.isTarget = arr;
 		},
 		// 设置当前选中的组件
-		setCurComponent(data: { index?: number; component: ComponentItem }) {
-			this.curComponent = data.component;
-			this.curComponentIndex = data.index;
+		setCurComponent(component: ComponentItem) {
+			this.curComponent = component;
 		},
 		// 设置当前组件的样式
 		setShapeStyle(style: ComponentStyle) {
 			if (!this.curComponent) return;
-			if (style.top) this.curComponent.bases.top = style.top;
-			if (style.left) this.curComponent.bases.left = style.left;
-			if (style.width) this.curComponent.bases.width = style.width;
-			if (style.height) this.curComponent.bases.height = style.height;
-			if (style.rotate) this.curComponent.bases.rotate = style.rotate;
+			if (style.top) this.curComponent.boxStyle.top = style.top;
+			if (style.left) this.curComponent.boxStyle.left = style.left;
+			if (style.width) this.curComponent.boxStyle.width = style.width;
+			if (style.height) this.curComponent.boxStyle.height = style.height;
+			if (style.rotate) this.curComponent.boxStyle.rotate = style.rotate;
 		},
 		setComponentData(componentData = []) {
 			this.componentData = componentData;

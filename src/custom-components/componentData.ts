@@ -1,31 +1,22 @@
-import { Components, bg } from './components';
+import { chartComponents, bg } from './components';
 
 import { BarChartOutlined, TableOutlined, StarOutlined, ApartmentOutlined, SecurityScanOutlined } from '@ant-design/icons-vue';
 
-const opt = {
-	textColor: '#8adde1',
-	bgColor: '#2f3133',
-	themeColor: '#0b74ff',
-	viceColor: '#38bca6',
-	colorList: ['#38bca6', '#f06862', '#bdfdff', '#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
-};
-const components = new Components(opt);
 // 类型： chart
 export const allComponentData: AsideComponentTypeItem = {
 	echarts: {
 		name: '图表',
 		icon: BarChartOutlined,
-		clas: 'tab',
 		tabs: [
 			{
 				title: '全部',
 				type: 'all',
-				components: [],
+				components: chartComponents,
 			},
 			{
 				title: '柱状图',
 				type: 'bar',
-				components: [],
+				components: chartComponents.filter((n) => n.type === 'bar'),
 			},
 			{
 				title: '条形图',
@@ -35,7 +26,7 @@ export const allComponentData: AsideComponentTypeItem = {
 			{
 				title: '折线图',
 				type: 'line',
-				components: [],
+				components: chartComponents.filter((n) => n.type === 'line'),
 			},
 			{
 				title: '区域图',
@@ -45,7 +36,7 @@ export const allComponentData: AsideComponentTypeItem = {
 			{
 				title: '饼环图',
 				type: 'pie',
-				components: [],
+				components: chartComponents.filter((n) => n.type === 'pie'),
 			},
 			{
 				title: '散点图',
@@ -55,7 +46,7 @@ export const allComponentData: AsideComponentTypeItem = {
 			{
 				title: '雷达图',
 				type: 'radar',
-				components: [],
+				components: chartComponents.filter((n) => n.type === 'radar'),
 			},
 			{
 				title: '关系图',
@@ -68,12 +59,10 @@ export const allComponentData: AsideComponentTypeItem = {
 				components: [],
 			},
 		],
-		components: [...components.pies, ...components.bars, ...components.lines, ...components.strip],
 	},
 	info: {
 		name: '信息',
 		icon: ApartmentOutlined,
-		clas: 'component',
 		components: [
 			{
 				title: '通用标题',
@@ -96,7 +85,6 @@ export const allComponentData: AsideComponentTypeItem = {
 	table: {
 		name: '表格',
 		icon: TableOutlined,
-		clas: 'component',
 		components: [
 			{
 				title: '轮播列表',
@@ -111,9 +99,7 @@ export const allComponentData: AsideComponentTypeItem = {
 	control: {
 		name: '控件',
 		icon: SecurityScanOutlined,
-		clas: 'component',
 		components: [
-			...components.control,
 			{
 				title: '开关',
 				image: bg('control/switch.png'),
@@ -147,7 +133,6 @@ export const allComponentData: AsideComponentTypeItem = {
 	like: {
 		name: '收藏',
 		icon: StarOutlined,
-		clas: 'component',
 		components: [],
 	},
 };

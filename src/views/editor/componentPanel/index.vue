@@ -7,38 +7,19 @@
 			</li>
 		</ul>
 		<div class="side-content" :class="{ collapsed: component }">
-			<template v-if="curSide.clas === 'tab'">
-				<a-tabs v-model:activeKey="data.tabActive" :tabBarGutter="0" type="card" tabPosition="left" @change="handleTabChange">
-					<a-tab-pane v-for="(tab, index) in curSide.tabs" :key="tab.type" :tab="tab.title">
-						<PerfectScrollbar class="wrapper-component">
-							<div v-if="tab.components && tab.components.length">
-								<template v-for="(component, idx) in tab.components" :key="`${data.sideActive}_${index}_${idx}`">
-									<component-item :component="component" :index="`${data.sideActive}_${index}_${idx}`" />
-								</template>
-							</div>
-							<a-empty v-else description="暂无组件" :image="Empty.PRESENTED_IMAGE_SIMPLE" />
-						</PerfectScrollbar>
-					</a-tab-pane>
-				</a-tabs>
-			</template>
-			<template v-else>
-				<PerfectScrollbar class="wrapper-component">
-					<div v-if="curSide.components && curSide.components.length">
-						<template v-for="(component, index) in curSide.components" :key="component">
-							<component-item :component="component" :index="`${data.sideActive}_${index}`" />
-						</template>
-					</div>
-					<a-empty v-else description="暂无组件" :image="Empty.PRESENTED_IMAGE_SIMPLE" />
-				</PerfectScrollbar>
-			</template>
+			<a-tabs v-if="curComopnent.tabs" v-model:activeKey="data.tabActive" :tabBarGutter="0" type="card" tabPosition="left" @change="handleTabChange">
+				<a-tab-pane v-for="tab in curComopnent.tabs" :key="tab.type" :tab="tab.title">
+					<componentList :components="tab.components" :side-key="data.sideActive" />
+				</a-tab-pane>
+			</a-tabs>
+			<componentList v-else :components="curComopnent.components" :side-key="data.sideActive" />
 		</div>
 	</a-layout-sider>
 </template>
 <script setup lang="ts">
-import { Empty } from 'ant-design-vue';
 import { computed, reactive } from 'vue';
 import { allComponentData } from '@/custom-components/componentData';
-import componentItem from '@/views/editor/componentPanel/component-item.vue';
+import componentList from '@/views/editor/componentPanel/componentList.vue';
 import { storeToRefs } from 'pinia';
 import { useSettingStore } from '@/stores/setting';
 import { theme } from 'ant-design-vue';
@@ -51,21 +32,14 @@ const data: SideData = reactive({
 	sideActive: 'echarts',
 	tabActive: 'all',
 });
-const curSide = computed(() => allComponentData[data.sideActive] || {});
+const curComopnent = computed(() => allComponentData[data.sideActive]);
 
 const handleSideClick = (key: SideComponentType) => {
 	data.sideActive = key;
 };
-const setComponent = () => {
-	const curSide = allComponentData[data.sideActive];
-	const comp = curSide.tabs && curSide.tabs.find((item: any) => item.type === data.tabActive);
-	if (!comp) return;
-	comp.components = comp.type === 'all' ? curSide.components : curSide.components.filter((item: any) => item.type === data.tabActive);
-};
-setComponent();
+
 const handleTabChange = (key: SeiresType) => {
 	data.tabActive = key;
-	setComponent();
 };
 </script>
 
@@ -140,12 +114,6 @@ const handleTabChange = (key: SeiresType) => {
 						padding-left: 0;
 					}
 				}
-			}
-			.wrapper-component {
-				height: calc(100vh - 64px);
-				padding: 8px;
-				padding-bottom: 0;
-				background-color: v-bind('token.colorBgLayout');
 			}
 		}
 		.collapsed {

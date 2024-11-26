@@ -1,5 +1,5 @@
 <template>
-	<a-flex align="center" :gap="10">
+	<a-flex :align="align" :justify="justify" :gap="10">
 		<span class="title">{{ props.title }}</span>
 		<slot />
 	</a-flex>
@@ -9,6 +9,14 @@ const props = defineProps({
 	title: {
 		type: String,
 		default: '',
+	},
+	align: {
+		type: String,
+		default: 'center',
+	},
+	justify: {
+		type: String,
+		default: 'flex-start',
 	},
 });
 </script>

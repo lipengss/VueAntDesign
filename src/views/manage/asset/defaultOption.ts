@@ -130,10 +130,10 @@ export class DefaultOption {
 				return {
 					...global,
 					grid: {
-						left: 50,
-						bottom: 40,
-						right: 40,
-						top: 40,
+						left: 40,
+						bottom: 25,
+						right: 20,
+						top: 20,
 					},
 					xAxis: {
 						show: true,
@@ -242,6 +242,7 @@ export class DefaultOption {
 									value: 90,
 								},
 							],
+							barWidth: '30%',
 							labelLine: {
 								show: false,
 							},

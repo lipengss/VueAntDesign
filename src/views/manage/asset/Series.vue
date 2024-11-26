@@ -23,62 +23,64 @@
 						</a-radio-group>
 					</flex-item>
 				</a-col>
-				<a-col :span="24">
-					<flex-item title="柱条宽度">
-						<NumType v-model:value="ser.barWidth" />
-					</flex-item>
-				</a-col>
-				<a-col :span="24">
-					<flex-item title="圆角">
-						<RespecSetNum v-model:value="ser.itemStyle.borderRadius" />
-					</flex-item>
-				</a-col>
-				<a-col :span="24">
-					<flex-item title="数据堆叠">
-						<a-switch v-model:checked="ser.stack" />
-					</flex-item>
-				</a-col>
-				<a-col :span="24">
-					<flex-item title="柱条背景色">
-						<a-switch
-							v-model:checked="ser.showBackground"
-							@change="(checked:boolean) => checked ? ser.backgroundStyle = {} : delete ser.backgroundStyle"
-						/>
-					</flex-item>
-				</a-col>
-				<a-card v-if="ser.showBackground" style="width: 100%" :body-style="{ padding: '10px' }">
-					<a-row :gutter="[10, 10]" align="middle">
-						<a-col :span="24">
-							<flex-item title="背景色">
-								<popu-color v-model:color="ser.backgroundStyle.color" />
-							</flex-item>
-						</a-col>
-						<a-col :span="24">
-							<flex-item title="边框宽度">
-								<a-input-number v-model:value="ser.backgroundStyle.borderWidth" />
-							</flex-item>
-						</a-col>
-						<a-col :span="24">
-							<flex-item title="描边类型">
-								<a-select v-model:value="ser.backgroundStyle.borderType" placeholder="选择描边类型">
-									<a-select-option value="solid">实线</a-select-option>
-									<a-select-option value="dashed">虚线</a-select-option>
-									<a-select-option value="dotted">电线</a-select-option>
-								</a-select>
-							</flex-item>
-						</a-col>
-						<a-col :span="24">
-							<flex-item title="边框颜色">
-								<popu-color v-model:color="ser.backgroundStyle.borderColor" />
-							</flex-item>
-						</a-col>
-						<a-col :span="24">
-							<flex-item title="圆角">
-								<RespecSetNum v-model:value="ser.backgroundStyle.borderRadius" />
-							</flex-item>
-						</a-col>
-					</a-row>
-				</a-card>
+				<template v-if="ser.type !== 'pie'">
+					<a-col :span="24">
+						<flex-item title="柱条宽度">
+							<NumType v-model:value="ser.barWidth" />
+						</flex-item>
+					</a-col>
+					<a-col :span="24">
+						<flex-item title="圆角">
+							<RespecSetNum v-model:value="ser.itemStyle.borderRadius" />
+						</flex-item>
+					</a-col>
+					<a-col :span="24">
+						<flex-item title="数据堆叠">
+							<a-switch v-model:checked="ser.stack" />
+						</flex-item>
+					</a-col>
+					<a-col :span="24">
+						<flex-item title="柱条背景色">
+							<a-switch
+								v-model:checked="ser.showBackground"
+								@change="(checked:boolean) => checked ? ser.backgroundStyle = {} : delete ser.backgroundStyle"
+							/>
+						</flex-item>
+					</a-col>
+					<a-card v-if="ser.showBackground" style="width: 100%" :body-style="{ padding: '10px' }">
+						<a-row :gutter="[10, 10]" align="middle">
+							<a-col :span="24">
+								<flex-item title="背景色">
+									<popu-color v-model:color="ser.backgroundStyle.color" />
+								</flex-item>
+							</a-col>
+							<a-col :span="24">
+								<flex-item title="边框宽度">
+									<a-input-number v-model:value="ser.backgroundStyle.borderWidth" />
+								</flex-item>
+							</a-col>
+							<a-col :span="24">
+								<flex-item title="描边类型">
+									<a-select v-model:value="ser.backgroundStyle.borderType" placeholder="选择描边类型">
+										<a-select-option value="solid">实线</a-select-option>
+										<a-select-option value="dashed">虚线</a-select-option>
+										<a-select-option value="dotted">电线</a-select-option>
+									</a-select>
+								</flex-item>
+							</a-col>
+							<a-col :span="24">
+								<flex-item title="边框颜色">
+									<popu-color v-model:color="ser.backgroundStyle.borderColor" />
+								</flex-item>
+							</a-col>
+							<a-col :span="24">
+								<flex-item title="圆角">
+									<RespecSetNum v-model:value="ser.backgroundStyle.borderRadius" />
+								</flex-item>
+							</a-col>
+						</a-row>
+					</a-card>
+				</template>
 				<LabelStyle :label="ser.label" :labelLine="ser.labelLine" />
 				<template v-if="ser.type === 'pie'">
 					<a-col :span="24">
@@ -136,7 +138,6 @@ const props = defineProps(['chartOption']);
 
 const { seriesType } = storeToRefs(useAssetStore());
 
-const xAixs = computed(() => props.chartOption.xAxis || {});
 const series = computed(() => props.chartOption.series || []);
 
 const activeKeys = ref<string[]>([]);

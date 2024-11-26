@@ -28,13 +28,12 @@ type SeiresType = 'all' | 'bar' | 'strip' | 'line' | 'area' | 'pie' | 'point' | 
 interface ComponentTypeItem {
 	name: string;
 	icon: any;
-	clas: 'tab' | 'component';
 	tabs?: {
 		title: string;
 		type: SeiresType;
 		components: any[];
 	}[];
-	components: AsideComponentItem[];
+	components?: AsideComponentItem[];
 }
 
 interface AsideComponentTypeItem {
@@ -52,7 +51,8 @@ interface ComponentItem {
 	type?: string;
 	component: string;
 	events?: any[];
-	bases: any;
+	boxStyle: any;
+	chartOption: any;
 	id: string;
 	offsetX: number;
 	offsetY: number;

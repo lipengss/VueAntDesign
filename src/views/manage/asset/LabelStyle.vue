@@ -4,13 +4,6 @@
 			<template #header> <a-switch size="small" v-model:checked="label.show" @change="switchChange('label')" /> 文本标签 </template>
 			<a-row :gutter="[10, 10]" align="middle">
 				<TextStyle :textStyle="label" />
-				<a-col :span="24">
-					<FlexItem title="标签位置">
-						<a-radio-group v-model:value="label.position" button-style="solid">
-							<a-radio-button v-for="item in position" :value="item">{{ item }}</a-radio-button>
-						</a-radio-group>
-					</FlexItem>
-				</a-col>
 			</a-row>
 		</a-collapse-panel>
 		<a-collapse-panel v-if="labelLine" key="labelLine" :collapsible="collapsible(labelLine.show)">
@@ -49,8 +42,6 @@ const { seriesType } = storeToRefs(useAssetStore());
 const props = defineProps(['label', 'labelLine']);
 
 const activeKeys = ref<string[]>([]);
-
-const position = ['outside', 'inside', 'center'];
 
 const onLengthChange = debounce(
 	(val: null | number) => {

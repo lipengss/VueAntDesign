@@ -49,10 +49,9 @@ const dragOptions = {
 	disabled: false,
 	ghostClass: 'ghost',
 };
-const selectComponent = (item: any) => {
-	console.log(item.id);
-	setCurComponent({ component: item, index: 0 });
-	setTargets([`#${item.id}`]);
+const selectComponent = (component: any) => {
+	setCurComponent(component);
+	setTargets([`#${component.id}`]);
 };
 const handleTools = (pos: string) => {
 	if (curComponent.value === null) return;
