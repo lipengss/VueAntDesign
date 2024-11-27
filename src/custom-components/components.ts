@@ -576,6 +576,47 @@ export const chartComponents = [
 			],
 		},
 	},
+	{
+		title: '环形饼状图',
+		type: 'pie',
+		component: 'v-pie',
+		image: bg('echarts/pie/pie2.png'),
+		dataSource: {},
+		id: nanoid(),
+		boxStyle: {
+			width: 300,
+			height: 150,
+			opacity: 1,
+		},
+		chartOption: {
+			color: ['#1f87e8ff', '#91cc75'],
+			legend: {
+				left: '90%',
+				top: 'center',
+				label: {
+					show: true,
+				},
+			},
+			series: [
+				{
+					type: 'pie',
+					radius: ['70%', '86%'],
+					data: [
+						{ value: 335, name: 'A' },
+						{ value: 200, name: 'B' },
+						{ value: 600, name: 'C' },
+					],
+					label: {
+						position: 'center',
+						formatter: '{d}%',
+						color: '#a9a9a9ff',
+						fontSize: 14,
+						fontWieght: 'bold',
+					},
+				},
+			],
+		},
+	},
 ];
 
 export function registerGlobalComponents(app) {
