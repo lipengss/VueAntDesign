@@ -1,4 +1,4 @@
-export const lineStyle = [
+export const lineStyleList = [
 	{ label: '实线', value: 'solid' },
 	{ label: '虚线', value: 'dashed' },
 	{ label: '点线', value: 'dotted' },
@@ -65,3 +65,26 @@ export function formatStrArr(arr: any) {
 		return { label: item, value: item };
 	});
 }
+
+
+export const BACKGROUND_REPEAT = [
+	{ label: '不重复', value: 'no-repeat' },
+	{ label: '重复', value: 'repeat' },
+	{ label: '水平重复', value: 'repeat-x' },
+	{ label: '垂直重复', value: 'repeat-y' },
+	{ label: '间距重复', value: 'round' },
+];
+
+export const BACKGROUND_POSITION = [
+	{ label: '顶部', value: 'top' },
+	{ label: '底部', value: 'bottom' },
+	{ label: '左侧', value: 'left' },
+	{ label: '右侧', value: 'right' },
+	{ label: '居中', value: 'center' },
+];
+
+export const BACKGROUND_SIZE = [
+	{ label: '自动', value: 'auto' },
+	{ label: '包含', value: 'contain' },
+	{ label: '覆盖', value: 'cover' },
+];

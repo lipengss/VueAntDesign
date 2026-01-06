@@ -1,8 +1,6 @@
 <template>
 	<a-drawer width="80%" title="画板中的数据" placement="right" v-model:open="sourceCode" :destroyOnClose="true">
-		<div class="drawer-scroll my-scroll">
-			<Codemirror :code="componentData" height="600px" />
-		</div>
+		<Codemirror :code="componentData" />
 	</a-drawer>
 </template>
 <script setup lang="ts">

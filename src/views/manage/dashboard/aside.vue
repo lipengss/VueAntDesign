@@ -30,7 +30,7 @@
 		</a-collapse-panel>
 		<a-collapse-panel key="recycle" header="回收站" :show-arrow="false">
 			<template #extra>
-				<DeleteOutlined />
+				<DeleteOutlined style="color:#ff4d4f" />	
 			</template>
 		</a-collapse-panel>
 	</a-collapse>

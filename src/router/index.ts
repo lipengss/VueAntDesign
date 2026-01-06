@@ -1,6 +1,8 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import Layout from '@/Layout/index.vue';
 
+
+
 const routes: Array<RouteRecordRaw> = [
 	{
 		path: '/login',

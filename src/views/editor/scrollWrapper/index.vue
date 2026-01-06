@@ -83,13 +83,13 @@ onMounted(() => {
 .wrapper {
 	flex: 1;
 	.bot-footer {
-		width: 100%;
+		width: calc(100% - 20px);
 		height: 34px;
 		position: absolute;
 		bottom: 0;
-		left: 0;
+		left: 20px;
 		z-index: 100;
-		border-top: 1px solid v-bind('token.colorBorder');
+		border-top: 1px solid v-bind('token.colorBorderSecondary');
 		background-color: v-bind('token.colorBgBase');
 		flex-shrink: 0;
 		display: flex;

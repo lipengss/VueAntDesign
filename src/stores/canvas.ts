@@ -18,8 +18,12 @@ export const useCanvasStore = defineStore('canvasStore', {
 			canvasWidth: 1920, // 画布宽度
 			canvasHeight: 1080, // 画布高度
 			showRuler: true, // 显示尺子
-			snapsObj: { h: [0, 100, 200], v: [130] },
+			snapsObj: { h: [], v: [] },
 			backgroundColor: '#0d2a42',
+			backgroundImage: '',
+			backgroundSize: 'cover',
+			backgroundPosition: 'center',
+			backgroundRepeat: 'no-repeat',
 			scale: 1,
 			shadow: {
 				x: 0,
@@ -41,8 +45,8 @@ export const useCanvasStore = defineStore('canvasStore', {
 			},
 			isShowReferLine: true,
 			lines: {
-				h: [0, 250],
-				v: [0, 500],
+				h: [],
+				v: [],
 			},
 		},
 		ruleOption: {
@@ -63,16 +67,20 @@ export const useCanvasStore = defineStore('canvasStore', {
 						longfgColor: '#BABBBC', // ruler longer mark color
 						fontColor: '#DEDEDE', // ruler font color
 						shadowColor: '#525252', // ruler shadow color
-						borderColor: '#B5B5B5',
+						borderColor: '#303030',
 						...state.ruleOption,
 				  };
 		},
 		canvasStyle(state) {
-			const { canvasWidth, canvasHeight, backgroundColor } = state.canvasOption;
+			const { canvasWidth, canvasHeight, backgroundColor, backgroundImage, backgroundSize, backgroundPosition, backgroundRepeat } = state.canvasOption;
 			return {
 				width: `${canvasWidth}px`,
 				height: `${canvasHeight}px`,
 				backgroundColor,
+				backgroundImage: `url(${backgroundImage})`,
+				backgroundSize,
+				backgroundPosition,
+				backgroundRepeat,
 			};
 		},
 		ruleWrapperStyle(state) {

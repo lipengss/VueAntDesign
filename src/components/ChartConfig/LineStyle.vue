@@ -6,11 +6,7 @@
 	</a-col>
 	<a-col :span="24">
 		<flex-item title="轴线类型">
-			<a-select v-model:value="lineStyle.type" placeholder="选择轴线类型">
-				<a-select-option value="solid">实线</a-select-option>
-				<a-select-option value="dashed">虚线</a-select-option>
-				<a-select-option value="dotted">电线</a-select-option>
-			</a-select>
+			<a-select v-model:value="lineStyle.type" :options="lineStyleList" placeholder="选择轴线类型" />
 		</flex-item>
 	</a-col>
 	<a-col :span="24">
@@ -47,6 +43,7 @@ import { computed } from 'vue';
 import FlexItem from '@/components/FlexItem/index.vue';
 import popuColor from '@/components/popuColor/popuColor.vue';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons-vue';
+import { lineStyleList } from './data';
 
 const props = defineProps({
 	lineStyle: {

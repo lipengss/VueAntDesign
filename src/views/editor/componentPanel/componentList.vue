@@ -15,7 +15,6 @@
 	</PerfectScrollbar>
 </template>
 <script setup lang="ts">
-import { defineProps } from 'vue';
 import { theme } from 'ant-design-vue';
 import { Empty } from 'ant-design-vue';
 const { token } = theme.useToken();
@@ -44,12 +43,12 @@ const handleDragStart = (e: any, component: ComponentItem): void => {
 	height: calc(100vh - 64px);
 	padding: 8px;
 	padding-bottom: 0;
-	background-color: v-bind('token.colorBgLayout');
+	background-color: v-bind('token.colorBgContainer');
 	.component-item {
 		margin-bottom: 8px;
 		border-radius: 3px;
 		overflow: hidden;
-		background-color: v-bind('token.colorFillSecondary');
+		transition: all 0.2s ease-in-out;
 		.title {
 			font-size: 12px;
 			line-height: 22px;
@@ -64,6 +63,13 @@ const handleDragStart = (e: any, component: ComponentItem): void => {
 			background-size: auto 100%;
 			background-repeat: no-repeat;
 			background-position: center;
+			border: 1px solid v-bind('token.colorFillSecondary');
+		}
+		&:hover {
+			cursor: pointer;
+			box-shadow: v-bind('token.boxShadow');
+			transform: translateY(-1px);
+			
 		}
 	}
 }

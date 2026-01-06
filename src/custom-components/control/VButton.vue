@@ -6,7 +6,7 @@
     >{{ element.bases.control.propValue }}</a-button>
 </template>
 <script lang="ts">
-import { styleTrans } from '@/utils/tools'
+import { formatStyle } from '@/utils/tools'
 import { defineComponent, ref, onMounted, computed } from 'vue'
 export default defineComponent({
   props: {
@@ -19,7 +19,7 @@ export default defineComponent({
     const btnRef = ref(null)
     const style = computed(() => {
       
-      return styleTrans(props.element.bases.control.style)
+      return formatStyle(props.element.bases.control.style)
     })
     
     onMounted(() => {

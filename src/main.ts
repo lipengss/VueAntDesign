@@ -3,6 +3,8 @@ import './style.css';
 import App from './App.vue';
 import router from './router';
 
+import InputNumber from './components/InputNumber/index.vue';
+
 import { createPinia } from 'pinia';
 
 const app = createApp(App);
@@ -31,6 +33,9 @@ registerGlobalComponents(app);
 // scroll
 import { PerfectScrollbarPlugin } from 'vue3-perfect-scrollbar';
 import 'vue3-perfect-scrollbar/style.css';
+
+// 全局组件
+app.component('input-number', InputNumber);
 
 app.use(PerfectScrollbarPlugin);
 app.use(createPinia());

@@ -50,6 +50,21 @@ ol {
 	.marigin-bottom-@{i} {
 		margin-bottom: (@i * @margin-step);
 	}
+	.padding-@{i} {
+		padding: (@i * @margin-step);
+	}
+	.padding-left-@{i} {
+		padding-left: (@i * @margin-step);
+	}
+	.padding-right-@{i} {
+		padding-right: (@i * @margin-step);
+	}
+	.padding-top-@{i} {
+		padding-top: (@i * @margin-step);
+	}
+	.padding-bottom-@{i} {
+		padding-bottom: (@i * @margin-step);
+	}
 	// 递归调用，生成下一个样式
 	.generate-margins(@i - 1);
 }
