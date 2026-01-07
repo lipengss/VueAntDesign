@@ -11,25 +11,25 @@ export const useCanvasStore = defineStore('canvasStore', {
 	state: (): State => ({
 		// 画布组件数据
 		canvasOption: {
-			thick: 20,
+			thick: 20, // 尺子的厚度
 			width: 1470, // 尺子的宽度
 			height: 800, // 尺子的高度
-			showShadowText: false,
 			canvasWidth: 1920, // 画布宽度
 			canvasHeight: 1080, // 画布高度
-			showRuler: true, // 显示尺子
-			snapsObj: { h: [], v: [] },
-			backgroundColor: '#0d2a42',
+			snapsObj: { h: [], v: [] }, // 吸附刻度集合
+			backgroundColor: '#dedede',
+			isShowBackgroundImage: false,
 			backgroundImage: '',
 			backgroundSize: 'cover',
 			backgroundPosition: 'center',
 			backgroundRepeat: 'no-repeat',
 			scale: 1,
+			showShadowText: true,
 			shadow: {
 				x: 0,
 				y: 0,
-				width: 300,
-				height: 300,
+				width: 0,
+				height: 0,
 			},
 			panzoomOption: {
 				canvas: true,
@@ -42,17 +42,18 @@ export const useCanvasStore = defineStore('canvasStore', {
 					event.preventDefault();
 					console.log('handleStartEvent', event);
 				},
-			},
-			isShowReferLine: true,
+			}, // panzoom相关的扩展参数
+			isShowReferLine: true, // 是否显示标线
+			showRuler: true, // 是否显示尺规
 			lines: {
 				h: [],
 				v: [],
-			},
+			}, // 初始化水平标尺上的参考线
 		},
 		ruleOption: {
 			bgColor: 'transparent',
-			lineColor: '#51d6a9',
-			lineType: 'dashed',
+			lineColor: '#ff4d4f',
+			lineType: 'solid',
 		},
 	}),
 	getters: {
@@ -72,15 +73,26 @@ export const useCanvasStore = defineStore('canvasStore', {
 				  };
 		},
 		canvasStyle(state) {
-			const { canvasWidth, canvasHeight, backgroundColor, backgroundImage, backgroundSize, backgroundPosition, backgroundRepeat } = state.canvasOption;
+			const {
+				canvasWidth,
+				canvasHeight,
+				backgroundColor,
+				isShowBackgroundImage,
+				backgroundImage,
+				backgroundSize,
+				backgroundPosition,
+				backgroundRepeat,
+			} = state.canvasOption;
+			const backgroundImageOption = isShowBackgroundImage
+				? { backgroundImage: `url(${backgroundImage})`, backgroundSize, backgroundPosition, backgroundRepeat }
+				: {
+					backgroundImage: 'none',
+				};
 			return {
 				width: `${canvasWidth}px`,
 				height: `${canvasHeight}px`,
 				backgroundColor,
-				backgroundImage: `url(${backgroundImage})`,
-				backgroundSize,
-				backgroundPosition,
-				backgroundRepeat,
+				...backgroundImageOption,
 			};
 		},
 		ruleWrapperStyle(state) {

@@ -249,7 +249,7 @@
 	</div>
 </template>
 <script lang="ts">
-import { labelPositions, legendType, pieLabelPositions, weights } from '../data';
+import { labelPositions, legendType, pieLabelPositions, weights } from '@/components/ChartConfig/data';
 import popuColor from '@/components/popuColor/popuColor.vue';
 import { defineComponent, reactive, toRefs } from 'vue';
 export default defineComponent({

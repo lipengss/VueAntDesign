@@ -6,6 +6,7 @@
 		:style="{ backgroundColor: token.colorBgContainer, borderLeft: `1px solid ${token.colorBorderSecondary}` }"
 	>
 		<a-tabs v-if="isTarget.length" v-model:activeKey="tabActive" size="small">
+			
 			<template v-for="tab in tabs" :key="tab.property">
 				<a-tab-pane v-if="compInTabProp(tab.property)" :tab="tab.label" :key="tab.property">
 					<PerfectScrollbar class="tab-scroll">
@@ -16,8 +17,8 @@
 		</a-tabs>
 		<div v-else class="page-set">
 			<div class="title">页面设置</div>
-			<div class="content my-scroll">
-				<a-collapse v-model:activeKey="activeKey">
+			<div class="content my-scroll" style="padding:0">
+				<a-collapse v-model:activeKey="activeKeys" ghost>
 					<a-collapse-panel key="1" header="画布设置">
 						<a-row class="line" :gutter="[10, 10]" align="middle">
 							<a-col :span="6" class="name">画布大小</a-col>
@@ -31,8 +32,17 @@
 							<a-col :span="18">
 								<popuColor v-model:color="canvasOption.backgroundColor" />
 							</a-col>
-							<a-col :span="6" class="name">画布背景</a-col>
-							<a-col :span="18">
+						</a-row>
+					</a-collapse-panel>
+					<a-collapse-panel key="background" :collapsible="collapsible(canvasOption.isShowBackgroundImage)">
+						<template #header> 
+							<a-space>
+								<a-switch size="small" v-model:checked="canvasOption.isShowBackgroundImage" @change="switchChange('background')" />
+								<span>背景图片</span>
+							</a-space>	
+						</template>
+						<a-row class="line" :gutter="[10, 10]" align="middle">
+							<a-col :span="24">
 								<a-upload-dragger
 									name="file"
 									action="#"
@@ -66,7 +76,13 @@
 							</a-col>
 						</a-row>
 					</a-collapse-panel>
-					<a-collapse-panel key="2" header="参考线">
+					<a-collapse-panel key="showRuler" :collapsible="collapsible(canvasOption.showRuler)">
+						<template #header> 
+							<a-space>
+								<a-switch size="small" v-model:checked="canvasOption.showRuler" @change="switchChange('showRuler')" />
+								<span>显示标尺</span>
+							</a-space>	
+						</template>
 						<a-row class="line" :gutter="[10, 10]" align="middle">
 							<a-col :span="6" class="name">参考线色</a-col>
 							<a-col :span="18">
@@ -95,6 +111,7 @@ import { lineStyleList } from '@/components/ChartConfig/data';
 import useUpload from '@/hooks/useUpload';
 import { InboxOutlined } from '@ant-design/icons-vue';
 import { BACKGROUND_REPEAT, BACKGROUND_POSITION, BACKGROUND_SIZE } from '@/components/ChartConfig/data';
+import { collapsible } from '@/utils/tools';
 
 const { token } = theme.useToken();
 const { setting } = storeToRefs(useSettingStore());
@@ -104,13 +121,18 @@ const { canvasOption, ruleOption } = storeToRefs(useCanvasStore());
 const { beforeUpload, customRequest } = useUpload(toRef(canvasOption.value, 'backgroundImage'));
 
 const tabActive = ref('bases');
-const activeKey = ref(['1', '2']);
+const activeKeys = ref(['1', 'showRuler']);
 const tabs = [
 	{ label: '样式', property: 'bases', component: defineAsyncComponent(() => import('./tabs/bases.vue')) },
 	{ label: '事件', property: 'events', component: defineAsyncComponent(() => import('./tabs/events.vue')) },
 	{ label: '数据', property: 'dataSource', component: defineAsyncComponent(() => import('./tabs/dataSource.vue')) },
 	{ label: '动画', property: 'animation', component: defineAsyncComponent(() => import('./tabs/animation.vue')) },
 ];
+
+const switchChange = (key: string) => {
+	const index = activeKeys.value.findIndex((item: string) => item === key);
+	index !== -1 && activeKeys.value.splice(index, 1);
+};
 
 // 当前选中的组件是否有tab属性
 function compInTabProp(property: string) {

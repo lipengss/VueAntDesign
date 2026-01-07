@@ -68,7 +68,7 @@
 					<a-col :span="7">轴线类型</a-col>
 					<a-col :span="17">
 						<a-select :size="size" v-model:value="axis.splitLine.lineStyle.type" style="width: 100%">
-							<a-select-option v-for="select in lineStyle" :key="select.value" :value="select.value">{{ select.label }}</a-select-option>
+							<a-select-option v-for="select in lineStyleList" :key="select.value" :value="select.value">{{ select.label }}</a-select-option>
 						</a-select>
 					</a-col>
 				</a-row>
@@ -77,7 +77,7 @@
 	</div>
 </template>
 <script lang="ts">
-import { lineStyle } from '../data';
+import { lineStyleList } from '@/components/ChartConfig/data';
 import { defineComponent, ref, Ref } from 'vue';
 import popuColor from '@/components/popuColor/popuColor.vue';
 export default defineComponent({

@@ -37,7 +37,7 @@
 	</div>
 </template>
 <script lang="ts">
-import { pointers } from '../data';
+import { pointers } from '@/components/ChartConfig/data';
 import { defineComponent } from 'vue';
 import popuColor from '@/components/popuColor/popuColor.vue';
 export default defineComponent({

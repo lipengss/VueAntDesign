@@ -64,6 +64,7 @@ function handleDrop(e: any) {
 	} else {
 		component = curSide.components && curSide.components.find((n) => n.id === id);
 	}
+	console.log('downOffsetY', downOffsetY)
 	component.offsetX = downOffsetX;
 	component.offsetY = downOffsetY;
 	component.id = `component_${nanoid()}`;

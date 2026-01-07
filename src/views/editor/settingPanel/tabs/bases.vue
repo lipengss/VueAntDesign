@@ -63,7 +63,7 @@
 						<a-col :span="6">边框类型</a-col>
 						<a-col :span="18">
 							<a-select v-model:value="bases.control.style.borderStyle" size="small" style="width: 100%">
-								<a-select-option v-for="item in lineStyle" :key="item.value">{{ item.label }}</a-select-option>
+								<a-select-option v-for="item in LineStyle" :key="item.value">{{ item.label }}</a-select-option>
 							</a-select>
 						</a-col>
 						<a-col :span="6">边框颜色</a-col>
@@ -101,7 +101,7 @@ import baseStyle from './config/baseStyle.vue';
 import Divider from '@/components/Divider/Divider.vue';
 import { storeToRefs } from 'pinia';
 import { useComponentStore } from '@/stores/component';
-import { lineStyle } from './data';
+import { LineStyle } from '@/components/ChartConfig/index';
 import popuColor from '@/components/popuColor/popuColor.vue';
 
 const { curComponent } = storeToRefs(useComponentStore());
