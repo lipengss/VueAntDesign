@@ -5,8 +5,8 @@
 			<a-col :span="6">图表尺寸</a-col>
 			<a-col :span="18">
 				<a-flex gap="small">
-					<a-input-number v-model:value="bases.width" />
-					<a-input-number v-model:value="bases.height" />
+					<input-number v-model:value="bases.width" prefix="W"  />
+					<input-number v-model:value="bases.height" prefix="H" />
 				</a-flex>
 			</a-col>
 			<template v-if="bases.chart">
@@ -15,28 +15,28 @@
 					<popuColor v-model:color="bases.chart.backgroundColor" />
 				</a-col>
 			</template>
-			<!-- <a-col :span="6" class="name">图表位置</a-col>
+			<a-col :span="6" class="name">图表位置</a-col>
 			<a-col :span="18">
 				<a-flex gap="small">
-					<a-input-number v-model:value="bases.transformNum[0]" @change="translateX" />
-					<a-input-number v-model:value="bases.transformNum[1]" @change="translateY" />
+					<input-number v-model:value="bases.translateX" prefix="X" />
+					<input-number v-model:value="bases.translateY" prefix="Y" />
 				</a-flex>
 			</a-col>
 			<a-col :span="6" class="name">旋转角度</a-col>
 			<a-col :span="9">
-				<a-input-number v-model:value="bases.transformNum[2]" @change="rotate" />
+				<input-number v-model:value="bases.rotate" prefix="°" />
 			</a-col>
 			<a-col :span="9">
 				<a-flex gap="small">
-					<a-button class="icon-btn"><svg-icon name="horizontal" /></a-button>
-					<a-button class="icon-btn"><svg-icon name="vertical" /></a-button>
+					<a-button size="small" class="icon-btn"><svg-icon name="horizontal" /></a-button>
+					<a-button size="small" class="icon-btn"><svg-icon name="vertical" /></a-button>
 				</a-flex>
-			</a-col> -->
+			</a-col>
 			<a-col :span="6" class="name">不透明度</a-col>
 			<a-col :span="18">
 				<a-flex gap="small">
 					<a-slider style="width: 100%" v-model:value="bases.opacity" :min="0" :max="1" :step="0.1" />
-					<a-input-number v-model:value="bases.opacity" :min="0" :max="1" :step="0.1" />
+					<input-number v-model:value="bases.opacity" :min="0" :max="1" :step="0.1" :dragSensitivity="1" />
 				</a-flex>
 			</a-col>
 		</a-row>
@@ -53,9 +53,5 @@ const { curComponent } = storeToRefs(useComponentStore());
 
 const bases = computed(() => curComponent.value.bases);
 
-const translateX = (value: number) => {
-	console.log(value);
-};
-const translateY = (value: number) => {};
-const rotate = (value: number) => {};
+
 </script>

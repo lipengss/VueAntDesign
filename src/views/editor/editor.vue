@@ -17,6 +17,7 @@ import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useProductStore } from '@/stores/product';
 import { useComponentStore } from '@/stores/component';
+import { useCanvasStore } from '@/stores/canvas';
 import { useRoute } from 'vue-router';
 import { notification } from 'ant-design-vue';
 import headerToolBar from './headerToolBar/index.vue';
@@ -30,8 +31,11 @@ const { params } = useRoute();
 const spinning = ref(false);
 
 const { product } = storeToRefs(useProductStore());
-const { isTarget } = storeToRefs(useComponentStore());
-const { addComponentData, setTargets, setCurComponent, clearComponent } = useComponentStore();
+const { isTarget, curComponent } = storeToRefs(useComponentStore());
+const { addComponentData, setTargets, clearComponent } = useComponentStore();
+const { canvasOption } = storeToRefs(useCanvasStore());
+
+
 
 const productId = computed(() => params.id);
 
@@ -41,18 +45,20 @@ function handleDragOver(e: any) {
 	e.dataTransfer.dropEffect = 'copy';
 }
 // 鼠标按下事件
-function handleMouseDown(e): void {
+function handleMouseDown(e:any): void {
 	console.log('触发大盒子的鼠标摁下事件了');
 	e.stopPropagation();
 	e.preventDefault();
 	setTargets([]);
+	canvasOption.value.shadow = {}
+
 }
 // 鼠标抬起事件
 function deselectCurComponent(): void {
 	console.log('触发大盒子的鼠标抬起事件了', isTarget.value.length);
 	if (!isTarget.value.length) {
 		setTargets([]);
-		setCurComponent({ component: null, index: 0 });
+		curComponent.value = null;
 	}
 }
 // 获取数据

@@ -32,7 +32,8 @@ const props = defineProps({
 const handleDragStart = (e: any, component: ComponentItem): void => {
 	const transfer = e.dataTransfer;
 	transfer.setData('sideKey', props.sideKey);
-	transfer.setData('id', component.id);
+	transfer.setData('id_component', component.id);
+	transfer.setData('type_component', component.type);
 	// 鼠标摁下  获取光标在组件内偏移的位置
 	transfer.setData('downOffsetX', e.offsetX);
 	transfer.setData('downOffsetY', e.offsetY);

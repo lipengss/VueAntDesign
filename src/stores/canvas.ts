@@ -1,6 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia';
 import type { PaletteType } from 'vue3-sketch-ruler';
 import { useThemeStore } from './theme';
+import { useComponentStore } from './component';
 
 interface State {
 	canvasOption: any;
@@ -24,7 +25,7 @@ export const useCanvasStore = defineStore('canvasStore', {
 			backgroundPosition: 'center',
 			backgroundRepeat: 'no-repeat',
 			scale: 1,
-			showShadowText: true,
+			showShadowText: false,
 			shadow: {
 				x: 0,
 				y: 0,
@@ -54,6 +55,7 @@ export const useCanvasStore = defineStore('canvasStore', {
 			bgColor: 'transparent',
 			lineColor: '#ff4d4f',
 			lineType: 'solid',
+			shadowColor: '#bae0ff'
 		},
 	}),
 	getters: {
@@ -103,5 +105,18 @@ export const useCanvasStore = defineStore('canvasStore', {
 			};
 		},
 	},
-	actions: {},
+	actions: {
+		setRuleShadow() {
+			const { curComponent } = storeToRefs(useComponentStore());
+			if (curComponent.value) {
+				const { bases } = curComponent.value;
+				this.canvasOption.shadow = {
+					x: bases.translateX,
+					y: bases.translateY,
+					width: bases.width,
+					height: bases.height,
+				};
+			}
+		}
+	},
 });

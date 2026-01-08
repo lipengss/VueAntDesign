@@ -31,15 +31,18 @@ import { useComponentStore } from '@/stores/component';
 import { allComponentData } from '@/custom-components/componentData';
 import { ZoomInOutlined, ZoomOutOutlined, ExpandOutlined } from '@ant-design/icons-vue';
 import elementResizeDetectorMaker from 'element-resize-detector';
-import { cloneDeep } from 'lodash-es';
 import VCanvas from './canvas.vue';
 import { theme } from 'ant-design-vue';
 import { nanoid } from 'nanoid';
+import { cloneDeep } from 'lodash-es';
 
 const { token } = theme.useToken();
 
-const { addComponentData } = useComponentStore();
+const { addComponentData, setTargets, setCurComponent } = useComponentStore();
 const { canvasOption, palette, ruleWrapperStyle } = storeToRefs(useCanvasStore());
+const { setRuleShadow } = useCanvasStore();
+
+
 
 const sketchruleRef = ref();
 
@@ -52,24 +55,41 @@ function onChange() {
 
 // 释放组件
 function handleDrop(e: any) {
+	e.preventDefault();
+	e.stopPropagation();
 	const transfer = e.dataTransfer;
-	const id = transfer.getData('id');
+	const id = transfer.getData('id_component');
+	const type = transfer.getData('type_component');
 	const sideKey = transfer.getData('sideKey');
-	const downOffsetX = transfer.getData('downOffsetX');
-	const downOffsetY = transfer.getData('downOffsetY');
+	const downOffsetX = parseFloat(transfer.getData('downOffsetX'));
+	const downOffsetY = parseFloat(transfer.getData('downOffsetY'));
+	
+	const canvasBox = e.currentTarget.getBoundingClientRect();
+	const scale = canvasOption.value.scale;
+	// 鼠标按下距离 - 元素距离 = 鼠标在元素上的偏移
+	const x = e.clientX - canvasBox.left;
+	const y = e.clientY - canvasBox.top;
+
+	console.log('--', downOffsetY, e.clientY, canvasBox.top)
+
 	const curSide = allComponentData[sideKey];
 	let component = null;
-	if (sideKey === 'echarts') {
-		component = cloneDeep(curSide.tabs && curSide.tabs[0].components.find((n) => n.id === id));
-	} else {
-		component = curSide.components && curSide.components.find((n) => n.id === id);
+	const curTypeTabs = curSide.tabs && curSide.tabs.find((n) => n.type === type);
+	switch(sideKey) {
+		case 'echarts':
+		component = cloneDeep(curTypeTabs && curTypeTabs.components.find((n) => n.id === id));
+		break;
+		default:
+		component = cloneDeep(curSide.components && curSide.components.find((n) => n.id === id));
+		break;
 	}
-	console.log('downOffsetY', downOffsetY)
-	component.offsetX = downOffsetX;
-	component.offsetY = downOffsetY;
-	component.id = `component_${nanoid()}`;
-	component.boxStyle.transform = `translate(${e.offsetX - downOffsetX}px, ${e.offsetY - downOffsetY}px)`;
+	component.id = 'component_' + nanoid();
+	component.bases.translateX = parseInt(String(x - downOffsetX));
+	component.bases.translateY = parseInt(String(y - downOffsetY));
 	addComponentData({ component });
+	setCurComponent(component);
+	setTargets([`#${component.id}`]);
+	setRuleShadow();
 }
 
 onMounted(() => {

@@ -48,10 +48,18 @@ interface AsideComponentTypeItem {
 interface ComponentItem {
 	title: string;
 	image: string;
-	type?: string;
+	type: string;
+	tab: 'echarts' | 'info' | 'control' | 'table';
 	component: string;
-	events?: any[];
-	boxStyle: any;
+	events: any[];
+	bases: {
+		width: number | string;
+		height: number | string;
+		translateX: number | string;
+		translateY: number | string;
+		rotate: number | string;
+		opacity: number | string;
+	};
 	chartOption: any;
 	id: string;
 	offsetX: number;

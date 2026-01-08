@@ -5,7 +5,7 @@
 	<Divider :title="curComponent.title" />
 	<a-collapse v-model="activeKeys" expandIconPosition="right" @change="collapseChange">
 		<template v-if="bases.chart">
-			<a-collapse-panel key="global" header="全局设置">
+			<!-- <a-collapse-panel key="global" header="全局设置">
 				<global :series="chart.series" :grid="chart.grid" :legend="chart.legend" :type="curComponent.type" />
 			</a-collapse-panel>
 			<a-collapse-panel key="xAxis" v-if="!!chart.xAxis" :disabled="!chart.xAxis.show">
@@ -25,7 +25,7 @@
 			</a-collapse-panel>
 			<a-collapse-panel key="animation" header="动画">
 				<p>动画</p>
-			</a-collapse-panel>
+			</a-collapse-panel> -->
 		</template>
 		<template v-if="bases.control">
 			<a-collapse-panel key="control" header="全局设置">

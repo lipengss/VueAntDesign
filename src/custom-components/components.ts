@@ -546,6 +546,7 @@ export const chartComponents = [
 	{
 		title: '基本饼状图',
 		type: 'pie',
+		tab: 'echarts',
 		component: 'v-pie',
 		image: bg('echarts/pie/pie1.png'),
 
@@ -561,7 +562,7 @@ export const chartComponents = [
 			height: 150,
 			rotate: 0,
 			opacity: 1,
-			chartOption: {
+			chart: {
 				color: ['#1f87e8ff', '#91cc75'],
 				series: [
 					{
@@ -588,6 +589,7 @@ export const chartComponents = [
 	{
 		title: '环形饼状图',
 		type: 'pie',
+		tab: 'echarts',
 		component: 'v-pie',
 		image: bg('echarts/pie/pie2.png'),
 		id: nanoid(),
@@ -602,7 +604,7 @@ export const chartComponents = [
 			height: 150,
 			rotate: 0,
 			opacity: 1,
-			chartOption: {
+			chart: {
 				color: ['#1f87e8ff', '#91cc75'],
 				legend: {
 					left: '90%',

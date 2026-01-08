@@ -5,6 +5,9 @@
     </span>
 		<a-input-number
 			:style="{ cursor: showResizeCursor ? 'ew-resize' : 'auto' }"
+			:min="min"
+			:max="max"
+			:step="step"
 			v-model:value="innerValue"
 			:keyboard="true"
 			:size="size"
