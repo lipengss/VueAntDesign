@@ -37,11 +37,12 @@ export default defineComponent({
       const domEchart = echartsRoot.value
       if(!domEchart) return
       myChart = echarts.init(domEchart, '', {renderer: 'svg'})
-      myChart.setOption(props.options, true)
+      myChart.setOption(props.options || {}, true)
     })
-    watch(props.options, (opt) => {
-      myChart.setOption(opt, true)
-    }),
+    watch(() => props.options, (opt) => {
+      if (!myChart) return
+      myChart.setOption(opt || {}, true)
+    }, { deep: true }),
     watch(() => props.width, (w) => {
       state.sty.width = w
       myChart.resize()

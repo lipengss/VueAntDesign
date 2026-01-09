@@ -1,48 +1,47 @@
 <template>
 	<a-col :span="24">
-		<FlexItem title="标签格式器">
+		<flex-item title="标签格式器">
 			<a-textarea
 				:value="formatter"
 				placeholder="{b|{b}} {d|{d}%}"
-				auto-size
-				@change="(e) => (textStyle.formatter = e.target.value.split(',').join('/n'))"
+				size="small"
+				@change="(e) => (label.formatter = e.target.value.split(',').join('/n'))"
 			/>
-		</FlexItem>
+		</flex-item>
 	</a-col>
 	<a-col :span="24">
 		<flex-item title="字体大小">
-			<a-slider style="width: 200px" v-model:value="textStyle.fontSize" :min="6" :max="60" :default-value="defaultFontSize" />
-			<a-input-number style="width: 120px" v-model:value="textStyle.fontSize" :min="6" :max="60" :default-value="defaultFontSize">
-				<template #addonAfter><svg-icon name="font-size" /></template>
-			</a-input-number>
+			<input-number size="small" v-model:value="label.fontSize" :min="6" :max="60">
+				<template #prefix><svg-icon name="font-size" /></template>
+			</input-number>
 		</flex-item>
 	</a-col>
 	<a-col :span="24">
 		<flex-item title="字体粗细">
-			<a-select v-model:value="textStyle.fontWeight" placeholder="默认不加粗">
+			<a-select v-model:value="label.fontWeight" size="small" placeholder="默认不加粗">
 				<a-select-option v-for="item in weights" :key="item.value" :value="item.value">{{ item.label }}</a-select-option>
 			</a-select>
 		</flex-item>
 	</a-col>
 	<a-col :span="24">
 		<flex-item title="字体颜色">
-			<popuColor v-model:color="textStyle.color" />
+			<popuColor v-model:color="label.color" />
 		</flex-item>
 	</a-col>
 	<a-col :span="24">
-		<FlexItem title="标签位置">
-			<a-radio-group v-model:value="textStyle.position" button-style="solid">
-				<a-radio-button v-for="item in position" :value="item">{{ item }}</a-radio-button>
+		<flex-item title="标签位置">
+			<a-radio-group v-model:value="label.position" button-style="solid" size="small">
+				<a-radio-button v-for="item in LABEL_POSITION" :value="item">{{ item }}</a-radio-button>
 			</a-radio-group>
-		</FlexItem>
+		</flex-item>
 	</a-col>
 	<a-col :span="24">
-		<FlexItem title="富文本样式" justify="flex-between">
-			<a-checkbox v-model:checked="textStyle.rich" />
+		<flex-item title="富文本样式" justify="flex-between">
+			<a-checkbox v-model:checked="label.rich" size="small" />
 			<a-button size="small" @click="onAddRich">添加</a-button>
-		</FlexItem>
+		</flex-item>
 	</a-col>
-	<a-col :span="24" v-if="textStyle.rich">
+	<a-col :span="24" v-if="label.rich">
 		<a-collapse expandIconPosition="right" style="width: 100%">
 			<a-collapse-panel v-for="[name, obj] in richData">
 				<template #header>
@@ -50,14 +49,14 @@
 				</template>
 				<a-row :gutter="[10, 10]">
 					<a-col :span="24">
-						<FlexItem title="颜色">
+						<flex-item title="颜色">
 							<popuColor v-model:color="obj.color" />
-						</FlexItem>
+						</flex-item>
 					</a-col>
 					<a-col :span="24">
-						<FlexItem title="宽度">
+						<flex-item title="宽度">
 							<NumType v-model:value="obj.width" />
-						</FlexItem>
+						</flex-item>
 					</a-col>
 				</a-row>
 			</a-collapse-panel>
@@ -68,21 +67,18 @@
 import { onMounted, ref, watch } from 'vue';
 import FlexItem from '@/components/FlexItem/index.vue';
 import popuColor from '@/components/popuColor/popuColor.vue';
-import { weights } from './data';
+import { weights, LABEL_POSITION } from './data';
 import { hasOwn } from '@/utils/tools';
 import { NumType } from '@/components/ChartConfig/index';
-import { nanoid } from 'nanoid';
 
 const props = defineProps({
-	textStyle: {
+	label: {
 		type: Object,
 		default: () => {},
 	},
-	defaultFontSize: {
-		type: Number,
-		default: 6,
-	},
 });
+
+const emits = defineEmits(['update:label']);
 
 const formatter = ref('');
 
@@ -90,7 +86,6 @@ const isRich = ref(false);
 
 const richData = ref(new Map());
 
-const position = ['outside', 'inside', 'center'];
 
 function onAddRich() {
 	richData.value.set('', { color: '' });
@@ -104,19 +99,19 @@ function onChange(e: any, name: string) {
 }
 
 onMounted(() => {
-	if (hasOwn(props.textStyle, 'rich')) {
+	if (hasOwn(props.label, 'rich')) {
 		isRich.value = true;
-		richData.value = new Map(Object.entries(props.textStyle.rich));
+		richData.value = new Map(Object.entries(props.label.rich));
 	} else {
 		isRich.value = false;
-		delete props.textStyle.rich;
+		delete props.label.rich;
 	}
 });
 
 watch(
 	() => richData.value,
 	(val) => {
-		props.textStyle.rich = Object.fromEntries(val);
+		props.label.rich = Object.fromEntries(val);
 	},
 	{
 		deep: true,
@@ -124,7 +119,7 @@ watch(
 );
 
 watch(
-	() => props.textStyle.formatter,
+	() => props.label.formatter,
 	(val) => {
 		if (val) {
 			formatter.value = val.join(',');

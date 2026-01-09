@@ -26,6 +26,7 @@ export class Chart extends Colors {
 	}
 	get grid() {
 		return {
+			show: true,
 			top: 20,
 			left: 10,
 			bottom: 10,

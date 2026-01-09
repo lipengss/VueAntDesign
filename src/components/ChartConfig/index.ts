@@ -1,5 +1,5 @@
 // 字体样式组件
-import TextStyle from './TextStyle.vue';
+import LabelStyle from './LabelStyle.vue';
 // 对齐方式组件
 import Align from './Align.vue';
 // 百分比/绝对值组件
@@ -11,4 +11,4 @@ import LineStyle from './LineStyle.vue';
 
 import RespecSetNum from './RespecSetNum.vue';
 
-export { TextStyle, Align, NumType, ArrayTable, LineStyle, RespecSetNum };
+export { LabelStyle, Align, NumType, ArrayTable, LineStyle, RespecSetNum };

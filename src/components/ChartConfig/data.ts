@@ -88,3 +88,5 @@ export const BACKGROUND_SIZE = [
 	{ label: '包含', value: 'contain' },
 	{ label: '覆盖', value: 'cover' },
 ];
+
+export const LABEL_POSITION  = ['outside', 'inside', 'center'];

@@ -551,11 +551,6 @@ export const chartComponents = [
 		image: bg('echarts/pie/pie1.png'),
 
 		id: nanoid(),
-		boxStyle: {
-			width: 300,
-			height: 150,
-			opacity: 1,
-		},
 		dataSource: {},
 		bases: {
 			width: 300,
@@ -563,10 +558,17 @@ export const chartComponents = [
 			rotate: 0,
 			opacity: 1,
 			chart: {
+				grid: {
+					show: false,
+				},
 				color: ['#1f87e8ff', '#91cc75'],
+				legend: {
+					show: false,
+				},
 				series: [
 					{
 						type: 'pie',
+						name: '系列名称',
 						radius: [0, '90%'],
 						data: [
 							{ value: 75, name: '数据1' },
@@ -593,11 +595,6 @@ export const chartComponents = [
 		component: 'v-pie',
 		image: bg('echarts/pie/pie2.png'),
 		id: nanoid(),
-		boxStyle: {
-			width: 300,
-			height: 150,
-			opacity: 1,
-		},
 		dataSource: {},
 		bases: {
 			width: 300,
@@ -606,7 +603,11 @@ export const chartComponents = [
 			opacity: 1,
 			chart: {
 				color: ['#1f87e8ff', '#91cc75'],
+				grid: {
+					show: false,
+				},
 				legend: {
+					show: true,
 					left: '90%',
 					top: 'center',
 					label: {
@@ -615,6 +616,7 @@ export const chartComponents = [
 				},
 				series: [
 					{
+						name: '系列名称',
 						type: 'pie',
 						radius: ['70%', '86%'],
 						data: [

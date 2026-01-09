@@ -5,10 +5,14 @@
 	<Divider :title="curComponent.title" />
 	<a-collapse v-model="activeKeys" expandIconPosition="right" @change="collapseChange">
 		<template v-if="bases.chart">
-			<!-- <a-collapse-panel key="global" header="全局设置">
-				<global :series="chart.series" :grid="chart.grid" :legend="chart.legend" :type="curComponent.type" />
+			<a-collapse-panel key="global" header="全局设置">
+				<global />
 			</a-collapse-panel>
-			<a-collapse-panel key="xAxis" v-if="!!chart.xAxis" :disabled="!chart.xAxis.show">
+			<a-collapse-panel key="grid" :disabled="!curComponent.bases.chart.grid.show">
+				<template #header> <a-switch size="small" v-model:checked="curComponent.bases.chart.grid.show" @change="gridChange" /> 网格线 </template>
+				<grid @change="switchChange" />
+			</a-collapse-panel>
+			<!-- <a-collapse-panel key="xAxis" v-if="!!chart.xAxis" :disabled="!chart.xAxis.show">
 				<template #header> <a-switch size="small" v-model:checked="chart.xAxis.show" @change="switchChange('xAxis')" /> X轴 </template>
 				<axis :axis="chart.xAxis" dire="xAxis" />
 			</a-collapse-panel>
@@ -97,22 +101,34 @@ import axis from './config/axis.vue';
 import global from './config/global.vue';
 import colors from './config/colors.vue';
 import tooltip from './config/tooltip.vue';
+import grid from './config/grid.vue';
+
 import baseStyle from './config/baseStyle.vue';
 import Divider from '@/components/Divider/Divider.vue';
 import { storeToRefs } from 'pinia';
 import { useComponentStore } from '@/stores/component';
 import { LineStyle } from '@/components/ChartConfig/index';
 import popuColor from '@/components/popuColor/popuColor.vue';
+import { Chart } from '@/custom-components/chart';
+
+const chartOpt = new Chart();
 
 const { curComponent } = storeToRefs(useComponentStore());
 
-const activeKeys: Ref<string[]> = ref([]);
+const activeKeys = ref<string[]>([]);
 const bases = computed(() => curComponent.value.bases);
-const chart = computed(() => bases.value.chart);
+
+function gridChange(check: Boolean) {
+	curComponent.value.bases.chart.grid = check ? { ...chartOpt.grid } : { show: false };
+	switchChange('grid');
+}
+
+
 // 开关
 const switchChange = (axis: string) => {
 	const index = activeKeys.value.findIndex((item: string) => item === axis);
 	index !== -1 && activeKeys.value.splice(index, 1);
+	console.log('activeKeys.value', activeKeys.value);
 };
 // 展开收起
 const collapseChange = (keys: string[]) => {

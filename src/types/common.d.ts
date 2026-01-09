@@ -59,8 +59,8 @@ interface ComponentItem {
 		translateY: number | string;
 		rotate: number | string;
 		opacity: number | string;
+		chart: any
 	};
-	chartOption: any;
 	id: string;
 	offsetX: number;
 	offsetY: number;
