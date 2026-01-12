@@ -1,24 +1,37 @@
 <template>
-	<el-row align="middle" :gutter="[10, 10]">
+	<a-row align="middle" :gutter="[10, 10]">
 		<a-col :span="6">图表边距</a-col>
 		<a-col :span="18">
 			<div class="margin">
-				<div><a-input-number v-model:value="grid.left" size="small" /></div>
+				<div><input-number v-model:value="grid.left" size="small" /></div>
 				<div class="center">
-					<div><a-input-number v-model:value="grid.top" size="small" /></div>
+					<input-number v-model:value="grid.top" size="small" />
 					<div class="box">
 						<div class="child"></div>
 					</div>
-					<div><a-input-number v-model:value="grid.bottom" size="small" /></div>
+					<input-number v-model:value="grid.bottom" size="small" />
 				</div>
-				<div><a-input-number v-model:value="grid.right" size="small" /></div>
+				<div><input-number v-model:value="grid.right" size="small" /></div>
 			</div>
 		</a-col>
-	</el-row>
+		<a-col :span="6">背景颜色</a-col>
+		<a-col :span="18">
+			<popuColor v-model:color="grid.backgroundColor" />
+		</a-col>
+		<a-col :span="6">包含标签</a-col>
+		<a-col :span="18">
+			<a-switch v-model:checked="grid.containLabel" size="small" />
+		</a-col>
+		<a-col :span="6">边框宽度</a-col>
+		<a-col :span="18">
+			<input-number v-model:value="grid.borderWidth" :min="0" :max="100" size="small" />
+		</a-col>
+	</a-row>
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
+import popuColor from '@/components/popuColor/popuColor.vue';
 import { useComponentStore } from '@/stores/component';
 
 const emits = defineEmits(['change']);
@@ -37,7 +50,10 @@ const grid = computed(() => curComponent.value.bases.chart.grid);
 	padding: 8px;
 	.center {
 		flex: 1;
-		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 		.box {
 			width: 100%;
 			height: 50px;

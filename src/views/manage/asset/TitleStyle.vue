@@ -12,12 +12,12 @@
 			<Align v-model:value="title.top" title="标题上间距" placeholder="标题离容器顶部的距离" />
 		</a-col>
 		<Divider title="主标题样式" />
-		<TextStyle :textStyle="title.textStyle" />
+		<LabelStyle :label="title.textStyle" />
 	</a-row>
 </template>
 <script setup lang="ts">
 import FlexItem from '@/components/FlexItem/index.vue';
-import { TextStyle, Align } from '@/components/ChartConfig/index';
+import { LabelStyle, Align } from '@/components/ChartConfig/index';
 import Divider from '@/components/Divider/Divider.vue';
 
 defineProps({

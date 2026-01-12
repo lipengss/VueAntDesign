@@ -20,7 +20,7 @@
 									<a-input v-model:value="xAxisLabel.formatter" placeholder="{value} kg" />
 								</FlexItem>
 							</a-col>
-							<TextStyle :textStyle="xAxisLabel" :defaultFontSize="14" />
+							<LabelStyle :label="xAxisLabel" />
 						</a-row>
 					</a-collapse-panel>
 					<a-collapse-panel key="splitLine" :collapsible="collapsible(splitLine.show)">
@@ -50,7 +50,7 @@ import axisLine from './axisLine.vue';
 import axisTick from './axisTick.vue';
 import { collapsible } from '@/utils/tools';
 import FlexItem from '@/components/FlexItem/index.vue';
-import { LineStyle, TextStyle } from '@/components/ChartConfig/index';
+import { LineStyle, LabelStyle } from '@/components/ChartConfig/index';
 
 import { useCollapseEvent } from '@/hooks/useCollapseEvent';
 

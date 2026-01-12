@@ -31,8 +31,9 @@ export class Chart extends Colors {
 			left: 10,
 			bottom: 10,
 			right: 10,
-			backgroundColor: 'red',
+			backgroundColor: 'transparent',
 			containLabel: true,
+			borderWidth: 0,
 		};
 	}
 	get xAxis() {

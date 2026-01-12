@@ -3,7 +3,7 @@
 		<a-collapse-panel key="label" :collapsible="collapsible(label.show)">
 			<template #header> <a-switch size="small" v-model:checked="label.show" @change="switchChange('label')" /> 文本标签 </template>
 			<a-row :gutter="[10, 10]" align="middle">
-				<TextStyle :textStyle="label" />
+				<LabelStyle :label="label" />
 			</a-row>
 		</a-collapse-panel>
 		<a-collapse-panel v-if="labelLine" key="labelLine" :collapsible="collapsible(labelLine.show)">
@@ -30,7 +30,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import { TextStyle } from '@/components/ChartConfig/index';
+import { LabelStyle } from '@/components/ChartConfig/index';
 import FlexItem from '@/components/FlexItem/index.vue';
 import { storeToRefs } from 'pinia';
 import { useAssetStore } from '@/stores/asset';
