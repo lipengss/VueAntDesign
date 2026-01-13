@@ -4,9 +4,9 @@ class Colors {
 	constructor(textColor?: string, bgColor?: string, themeColor?: string, viceColor?: string, colorList?: string[]) {
 		this.textColor = textColor || '#666666';
 		this.bgColor = bgColor || '#2f3133';
-		this.themeColor = bgColor || '#0e76ff';
-		this.viceColor = bgColor || '#666666';
-		this.colorList = bgColor || ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'];
+		this.themeColor = themeColor || '#0e76ff';
+		this.viceColor = viceColor || '#666666';
+		this.colorList = colorList || ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'];
 	}
 }
 export class Chart extends Colors {

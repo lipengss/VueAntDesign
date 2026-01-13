@@ -1,71 +1,54 @@
 <template>
-	<a-col :span="24">
-		<flex-item title="标签格式器">
-			<a-textarea
-				:value="formatter"
-				placeholder="{b|{b}} {d|{d}%}"
-				size="small"
-				@change="(e) => (label.formatter = e.target.value.split(',').join('/n'))"
-			/>
-		</flex-item>
-	</a-col>
-	<a-col :span="24">
-		<flex-item title="字体大小">
-			<input-number size="small" v-model:value="label.fontSize" :min="6" :max="60">
-				<template #prefix><svg-icon name="font-size" /></template>
-			</input-number>
-		</flex-item>
-	</a-col>
-	<a-col :span="24">
-		<flex-item title="字体粗细">
-			<a-select v-model:value="label.fontWeight" size="small" placeholder="默认不加粗">
-				<a-select-option v-for="item in weights" :key="item.value" :value="item.value">{{ item.label }}</a-select-option>
-			</a-select>
-		</flex-item>
-	</a-col>
-	<a-col :span="24">
-		<flex-item title="字体颜色">
-			<popuColor v-model:color="label.color" />
-		</flex-item>
-	</a-col>
-	<a-col :span="24">
-		<flex-item title="标签位置">
-			<a-radio-group v-model:value="label.position" button-style="solid" size="small">
-				<a-radio-button v-for="item in LABEL_POSITION" :value="item">{{ item }}</a-radio-button>
-			</a-radio-group>
-		</flex-item>
-	</a-col>
-	<a-col :span="24">
-		<flex-item title="富文本样式" justify="flex-between">
+	<a-form-item label="标签格式器">
+		<a-textarea
+			:value="formatter"
+			placeholder="{b|{b}} {d|{d}%}"
+			size="small"
+			@change="(e) => (label.formatter = e.target.value.split(',').join('/n'))"
+		/>
+	</a-form-item>
+	<a-form-item label="字体大小">
+		<input-number size="small" v-model:value="label.fontSize" :min="6" :max="60">
+			<template #prefix><svg-icon name="font-size" /></template>
+		</input-number>
+	</a-form-item>
+	<a-form-item label="字体粗细">
+		<a-select v-model:value="label.fontWeight" size="small" placeholder="默认不加粗">
+			<a-select-option v-for="item in weights" :key="item.value" :value="item.value">{{ item.label }}</a-select-option>
+		</a-select>
+	</a-form-item>
+	<a-form-item label="字体颜色">
+		<popuColor v-model:color="label.color" />
+	</a-form-item>
+	<a-form-item label="标签位置">
+		<a-radio-group v-model:value="label.position" button-style="solid" size="small">
+			<a-radio-button v-for="item in LABEL_POSITION" :value="item">{{ item }}</a-radio-button>
+		</a-radio-group>
+	</a-form-item>
+	<a-form-item label="富文本样式">
+		<a-space justify="flex-between">
 			<a-checkbox v-model:checked="label.rich" size="small" />
 			<a-button size="small" @click="onAddRich">添加</a-button>
-		</flex-item>
-	</a-col>
-	<a-col :span="24" v-if="label.rich">
+		</a-space>
+	</a-form-item>
+	<a-form-item v-if="label.rich">
 		<a-collapse expandIconPosition="right" style="width: 100%">
 			<a-collapse-panel v-for="[name, obj] in richData">
 				<template #header>
 					<a-input :value="name" @change="onChange($event, name)"></a-input>
 				</template>
-				<a-row :gutter="[10, 10]">
-					<a-col :span="24">
-						<flex-item title="颜色">
-							<popuColor v-model:color="obj.color" />
-						</flex-item>
-					</a-col>
-					<a-col :span="24">
-						<flex-item title="宽度">
-							<NumType v-model:value="obj.width" />
-						</flex-item>
-					</a-col>
-				</a-row>
+				<a-form-item label="颜色">
+					<popuColor v-model:color="obj.color" />
+				</a-form-item>
+				<a-form-item label="宽度">
+					<NumType v-model:value="obj.width" />
+				</a-form-item>
 			</a-collapse-panel>
 		</a-collapse>
-	</a-col>
+	</a-form-item>
 </template>
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import FlexItem from '@/components/FlexItem/index.vue';
 import popuColor from '@/components/popuColor/popuColor.vue';
 import { weights, LABEL_POSITION } from './data';
 import { hasOwn } from '@/utils/tools';
@@ -85,7 +68,6 @@ const formatter = ref('');
 const isRich = ref(false);
 
 const richData = ref(new Map());
-
 
 function onAddRich() {
 	richData.value.set('', { color: '' });

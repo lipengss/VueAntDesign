@@ -10,7 +10,7 @@
 				</a-tooltip>
 			</FlexItem>
 		</a-col>
-		<template v-if="axisLine.symbol.every((n) => n !== 'none')">
+		<template v-if="axisLine.symbol.every((n:any) => n !== 'none')">
 			<a-col :span="24">
 				<FlexItem title="箭头大小">
 					<a-input-number v-model:value="axisLine.symbolSize[0]" addonAfter="Y" />
