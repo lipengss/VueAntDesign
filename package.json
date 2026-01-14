@@ -35,6 +35,7 @@
     "vue3-colorpicker": "^2.3.0",
     "vue3-moveable": "^0.28.0",
     "vue3-perfect-scrollbar": "^2.0.0",
+    "vue3-selecto": "^1.12.3",
     "vue3-sketch-ruler": "^2.2.6",
     "vuedraggable": "^4.1.0"
   },

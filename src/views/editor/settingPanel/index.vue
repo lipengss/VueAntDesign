@@ -91,6 +91,15 @@
                 <a-form-item v-if="canvasOption.lockLine" label="锁定颜色">
                   <popuColor v-model:color="ruleOption.lockLineColor" />
                 </a-form-item>
+                <a-form-item label="阴影文字">
+                  <a-switch v-model:checked="canvasOption.showShadowText" />
+                </a-form-item>
+                <a-form-item v-if="canvasOption.showShadowText" label="阴影背景色">
+                  <popuColor v-model:color="ruleOption.shadowColor" />
+                </a-form-item>
+                <a-form-item v-if="canvasOption.showShadowText" label="阴影文字颜色">
+                  <popuColor v-model:color="ruleOption.fontShadowColor" />
+                </a-form-item>
                 <a-tabs>
                   <a-tab-pane key="h" tab="横线吸附">
                     <spanObj direction="h" />

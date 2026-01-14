@@ -51,7 +51,7 @@
   watch(
     () => canvasOption.value.snapsObj[props.direction],
     (newVal) => {
-      canvasOption.value.lines[props.direction] = newVal
+      // canvasOption.value.lines[props.direction] = newVal
     },
     {
       deep: true,

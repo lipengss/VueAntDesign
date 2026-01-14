@@ -86,6 +86,9 @@ importers:
       vue3-perfect-scrollbar:
         specifier: ^2.0.0
         version: 2.0.0(vue@3.5.12(typescript@5.6.3))
+      vue3-selecto:
+        specifier: ^1.12.3
+        version: 1.12.3
       vue3-sketch-ruler:
         specifier: ^2.2.6
         version: 2.2.6
@@ -2067,6 +2070,9 @@ packages:
     resolution: {integrity: sha512-nSWVcRyViCgt0Pe3RhU3w/BllLcFSrEzYOGlRBjSyhVmiZlERHHziffW+9P8L0IMEWouC5t+uYrgNJGSAElqMA==}
     peerDependencies:
       vue: ^3.0.0
+
+  vue3-selecto@1.12.3:
+    resolution: {integrity: sha512-zIQLwuvjTNaivITLbBAnm6Sh8BFRG8QocNZLzKvqRIqnpRa2lvlIw9+l1wdI/84msh8cSNIdiWsgote62cgtHA==}
 
   vue3-sketch-ruler@2.2.6:
     resolution: {integrity: sha512-3TZqy/mDBk9HalbrBRaFIahif8j6huQIKo4j9sQU0MRFHL5yzzIP/Ll1YhlJzxJrivOfPV8KmJQTMDFPnyGVNg==}
@@ -4160,6 +4166,10 @@ snapshots:
     dependencies:
       perfect-scrollbar: 1.5.6
       vue: 3.5.12(typescript@5.6.3)
+
+  vue3-selecto@1.12.3:
+    dependencies:
+      selecto: 1.26.3
 
   vue3-sketch-ruler@2.2.6: {}
 

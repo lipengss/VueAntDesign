@@ -17,7 +17,7 @@ export const useCanvasStore = defineStore('canvasStore', {
       height: 800, // 尺子的高度
       canvasWidth: 1920, // 画布宽度
       canvasHeight: 1080, // 画布高度
-      snapsObj: { h: [], v: [] }, // 吸附刻度集合
+      snapsObj: { h: [100], v: [100] }, // 吸附刻度集合
       backgroundColor: '#dedede',
       isShowBackgroundImage: false,
       backgroundImage: '',
@@ -58,6 +58,9 @@ export const useCanvasStore = defineStore('canvasStore', {
       lockLineColor: 'rgb(248, 152, 152)',
       lineType: 'solid',
       shadowColor: '#bae0ff',
+      fontShadowColor: '#106ebe',
+      fontColor: '#333',
+      longfgColor: '#333',
     },
   }),
   getters: {
@@ -66,14 +69,15 @@ export const useCanvasStore = defineStore('canvasStore', {
       return modeIcon.value === 'dark'
         ? state.ruleOption
         : {
+            ...state.ruleOption,
             hoverBg: '#fff',
             bb: '#fff',
             hoverColor: '#000',
-            longfgColor: '#BABBBC', // ruler longer mark color
-            fontColor: '#DEDEDE', // ruler font color
-            shadowColor: '#525252', // ruler shadow color
+            fontShadowColor: '#fff',
+            longfgColor: '#BABBBC', // 刻度背景色
+            fontColor: '#DEDEDE', // 刻度文字颜色
+            shadowColor: '#525252', // 刻度阴影颜色
             borderColor: '#303030',
-            ...state.ruleOption,
           }
     },
     canvasStyle(state) {

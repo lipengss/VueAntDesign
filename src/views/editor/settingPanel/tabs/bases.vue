@@ -2,7 +2,7 @@
   <!-- 基础样式 -->
   <baseStyle />
   <!-- 图表设置 -->
-  <Divider :title="curComponent.title" />
+  <Divider :title="curComponent?.title" />
   <a-collapse v-model="activeKeys" expandIconPosition="right" :bordered="false" style="margin: 0 -8px" @change="collapseChange">
     <template v-if="bases.chart">
       <a-collapse-panel key="legend" :disabled="!legend.show">
@@ -109,10 +109,10 @@
               <a-switch v-model:checked="ser.smooth" size="small" />
             </a-form-item>
             <a-form-item label="线宽">
-              <a-sapce>
+              <a-space>
                 <a-slider style="width: 100%" size="small" v-model:value="ser.lineStyle.width" :step="1" :min="1" :max="60" />
                 <a-input-number v-model:value="ser.lineStyle.width" size="small" :step="1" />
-              </a-sapce>
+              </a-space>
             </a-form-item>
             <a-form-item label="区域色">
               <popuColor v-model:color="ser.areaStyle.color.colorStops[0].color" />
@@ -172,10 +172,10 @@
 				<p>动画</p>
 			</a-collapse-panel> -->
     </template>
-    <template v-if="bases.control">
+    <template v-if="curComponent.tab === 'control'">
       <a-collapse-panel key="control" header="全局设置">
         <a-form>
-          <template v-if="curComponent.type === 'btn'">
+          <template v-if="curComponent?.type === 'btn'">
             <a-form-item>内容</a-form-item>
             <a-form-item :span="18">
               <a-input v-model:value="bases.control.propValue" size="small" />
@@ -222,7 +222,7 @@
               <popuColor v-model:color="bases.control.style.backgroundColor" />
             </a-form-item>
           </template>
-          <template v-if="curComponent.type === 'select'">
+          <template v-if="curComponent?.type === 'select'">
             <a-form-item>占位符</a-form-item>
             <a-form-item :span="18">
               <a-input size="small" v-model:value="bases.control.placeholder" />

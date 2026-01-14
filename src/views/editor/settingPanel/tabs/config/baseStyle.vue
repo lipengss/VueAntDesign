@@ -1,6 +1,6 @@
 <template>
   <Divider title="基础样式" />
-  <a-form class="set-panel-from">
+  <a-form class="set-panel-from" v-if="bases">
     <a-form-item label="图表尺寸">
       <a-space>
         <input-number v-model:value="bases.width" prefix="W" />
@@ -42,5 +42,5 @@
 
   const { curComponent } = storeToRefs(useComponentStore())
 
-  const bases = computed(() => curComponent.value.bases)
+  const bases = computed(() => curComponent.value?.bases || ({} as BaseStyle))
 </script>

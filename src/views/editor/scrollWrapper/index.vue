@@ -59,16 +59,14 @@
     const id = transfer.getData('id_component')
     const type = transfer.getData('type_component')
     const sideKey = transfer.getData('sideKey')
-    const downOffsetX = parseFloat(transfer.getData('downOffsetX'))
-    const downOffsetY = parseFloat(transfer.getData('downOffsetY'))
+    const downOffsetX = parseFloat(transfer.getData('downOffsetX') || '0')
+    const downOffsetY = parseFloat(transfer.getData('downOffsetY') || '0')
 
     const canvasBox = e.currentTarget.getBoundingClientRect()
-    const scale = canvasOption.value.scale
-    // 鼠标按下距离 - 元素距离 = 鼠标在元素上的偏移
-    const x = e.clientX - canvasBox.left
-    const y = e.clientY - canvasBox.top
-
-    console.log('--', downOffsetY, e.clientY, canvasBox.top)
+    const scale = canvasOption.value.scale || 1
+    // 将屏幕坐标还原到画布坐标系
+    const x = (e.clientX - canvasBox.left) / scale
+    const y = (e.clientY - canvasBox.top) / scale
 
     const curSide = allComponentData[sideKey]
     let component = null
@@ -82,6 +80,7 @@
         break
     }
     component.id = 'component_' + nanoid()
+    // 以鼠标在组件内的按下点作为拖拽锚点：画布坐标减去按下时在组件内的偏移
     component.bases.translateX = parseInt(String(x - downOffsetX))
     component.bases.translateY = parseInt(String(y - downOffsetY))
     addComponentData({ component })
