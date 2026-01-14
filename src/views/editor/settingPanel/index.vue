@@ -17,13 +17,13 @@
         </a-tab-pane>
       </template>
     </a-tabs>
-    <a-tabs v-else class="page-set">
+    <a-tabs v-else class="page-set" size="small">
       <a-tab-pane tab="页面设置">
         <PerfectScrollbar class="tab-scroll">
           <Divider title="页面设置" />
           <a-form class="set-panel-from">
             <a-form-item label="框内移动">
-              <a-switch size="small" checkedValue="inside" unCheckedValue="none" v-model:checked="canvasOption.panzoomOption.contain" />
+              <a-switch checkedValue="inside" unCheckedValue="none" v-model:checked="canvasOption.panzoomOption.contain" />
             </a-form-item>
             <a-form-item label="画布大小">
               <a-space>
@@ -79,12 +79,26 @@
                 <a-form-item label="参考线色">
                   <popuColor v-model:color="ruleOption.lineColor" />
                 </a-form-item>
-                <a-form-item label="参考线色">
+                <a-form-item label="参考线类型">
                   <a-select v-model:value="ruleOption.lineType" :options="lineStyleList" size="small" style="width: 140px" />
+                </a-form-item>
+                <a-form-item label="显示参考线">
+                  <a-switch v-model:checked="canvasOption.isShowReferLine" />
                 </a-form-item>
                 <a-form-item label="锁定参考线">
                   <a-switch v-model:checked="canvasOption.lockLine" />
                 </a-form-item>
+                <a-form-item v-if="canvasOption.lockLine" label="锁定颜色">
+                  <popuColor v-model:color="ruleOption.lockLineColor" />
+                </a-form-item>
+                <a-tabs>
+                  <a-tab-pane key="h" tab="横线吸附">
+                    <spanObj direction="h" />
+                  </a-tab-pane>
+                  <a-tab-pane key="v" tab="竖线吸附">
+                    <spanObj direction="v" />
+                  </a-tab-pane>
+                </a-tabs>
               </a-form>
             </a-collapse-panel>
           </a-collapse>
@@ -107,6 +121,7 @@
   import Divider from '@/components/Divider/Divider.vue'
   import { BACKGROUND_REPEAT, BACKGROUND_POSITION, BACKGROUND_SIZE } from '@/components/ChartConfig/data'
   import { collapsible } from '@/utils/tools'
+  import spanObj from './spanObj.vue'
 
   const { token } = theme.useToken()
   const { setting } = storeToRefs(useSettingStore())
@@ -154,20 +169,6 @@
   }
 </script>
 <style lang="less" scoped>
-  // global Style
-  :deep .ant-row {
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    margin-bottom: 10px;
-    font-size: 12px;
-    color: v-bind('token.colorTextLabel');
-    .ant-input-number {
-      width: 100%;
-    }
-  }
-  // globa end
-
   :deep .ant-tabs {
     .ant-tabs-nav {
       margin-bottom: 0;

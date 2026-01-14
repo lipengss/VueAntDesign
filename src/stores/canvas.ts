@@ -55,6 +55,7 @@ export const useCanvasStore = defineStore('canvasStore', {
     ruleOption: {
       bgColor: 'transparent',
       lineColor: '#ff4d4f',
+      lockLineColor: 'rgb(248, 152, 152)',
       lineType: 'solid',
       shadowColor: '#bae0ff',
     },
